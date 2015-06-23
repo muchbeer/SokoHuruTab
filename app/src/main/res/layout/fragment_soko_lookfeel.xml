@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:padding="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:id="@+id/card_view"
+        card_view:cardCornerRadius="7dp"
+        android:layout_margin="4dp"
+
+        >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFF"
+    >
+
+    <ImageView
+        android:id="@+id/sokoThumbnail"
+        android:layout_width="@dimen/movie_thumbnail_height"
+        android:layout_height="@dimen/movie_thumbnail_width"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher"
+        android:padding="4dp"
+        android:layout_marginLeft="7dp"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sokoTitle"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:layout_toRightOf="@+id/sokoThumbnail"
+        android:layout_alignParentTop="true"
+        android:padding="4dp"
+        android:textSize="18sp"
+        android:alpha="0.87"
+        android:text="Item"
+        android:layout_marginLeft="7dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sokoRating"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:layout_below="@id/sokoTitle"
+        android:paddingTop="8dp"
+        android:text="Moto wetu"
+        android:alpha="0.87"
+        android:layout_toRightOf="@+id/sokoThumbnail"
+        android:layout_marginLeft="7dp"
+        android:textSize="14dp"/>
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/recyclerView"
+        android:layout_below="@id/sokoRating"
+        android:layout_toRightOf="@+id/sokoThumbnail"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="4dp"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/sokoPrice"
+        android:layout_below="@id/viewLine"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@+id/sokoThumbnail"
+        android:textColor="@color/black"
+        android:text="Amount"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="7dp"
+        />
+
+</RelativeLayout>
+    </android.support.v7.widget.CardView>
+    </LinearLayout>
