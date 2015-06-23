@@ -244,6 +244,7 @@ public class SokoHuruFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
         // Inflate the layout for this fragment
 
+
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
