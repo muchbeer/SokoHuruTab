@@ -18,12 +18,12 @@ public class SokoHelper extends SQLiteOpenHelper {
     private static final String dbName = "sokoni";
     private static final int dbVersion = 1;
     public static final String tableSokoni = "sokoniTable";
-    private static final String columnUID = "_id";
-    private static final String columnTITLE = "title";
-    private static final String columnIMAGE = "image";
-    private static final String columnGENRE = "genre";
-    private static final String columnRATING = "rating";
-    private static final String columnYEAR = "releasingYear";
+   public static final String columnUID = "_id";
+    public static final String columnTITLE = "title";
+    public static final String columnIMAGE = "image";
+    public static final String columnGENRE = "genre";
+    public static final String columnRATING = "rating";
+    public static final String columnYEAR = "releasingYear";
 
     private static final String CREATE_TABLE_SOKONI =
             "CREATE TABLE " + tableSokoni + "(" +
