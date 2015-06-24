@@ -15,7 +15,9 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+
         sInstance=this;
+        mDatabase = new SokoDatabase(this);
     }
 
     public static MyApplication getsInstance() {

@@ -133,13 +133,16 @@ public class SokoHuruFragment extends Fragment {
         listSokoni.setAdapter(adapterSoko);
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
-            adapterSoko.setSokoList(listMovies);
+
         }
         else {
       //      sendJsonRequest();
 
            listMovies =  MyApplication.getWritableDatabase().getAllItemFromMarket();
+
         }
+
+        adapterSoko.setSokoList(listMovies);
         return view;
 
     }

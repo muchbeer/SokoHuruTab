@@ -53,8 +53,14 @@ public class SokoHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int olderVersion, int newVersion) {
+
+
+        if(newVersion>olderVersion)
+          //  copyDatabase();
+
         try {
             L.m("upgrade table sokoni executed");
+
             db.execSQL(" DROP TABLE " + tableSokoni + " IF EXISTS: ");
             onCreate(db);
         }catch (SQLiteException exception) {
