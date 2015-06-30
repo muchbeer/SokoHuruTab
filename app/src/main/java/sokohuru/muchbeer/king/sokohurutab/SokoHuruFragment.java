@@ -52,7 +52,7 @@ public class SokoHuruFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi.json";
+    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
     private static final String STATE_SOKO = "State Sokoni";
 
     // TODO: Rename and change types of parameters
@@ -119,7 +119,7 @@ public class SokoHuruFragment extends Fragment {
     public void sendJsonRequest() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_SOKO,
-                (String) null,
+                null,
                 new Response.Listener<JSONObject>() {
 
                     @Override

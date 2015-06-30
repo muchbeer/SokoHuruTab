@@ -112,7 +112,7 @@ public class MyService extends JobService {
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                     SokoHuruFragment.URL_SOKO,
-                    (String) null,
+                     null,
                requestFuture,requestFuture);
             requestQueue.add(request);
 

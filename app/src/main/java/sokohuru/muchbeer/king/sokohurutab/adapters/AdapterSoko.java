@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -29,9 +30,10 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private final ImageLoader imageLoader;
 
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
-    private Context context;
+    private static Context context;
 
     public AdapterSoko(Context context) {
+        this.context = context;
         layoutInflater = LayoutInflater.from(context);
         volleySingleTon = VolleySingleton.getsInstance();
         imageLoader = volleySingleTon.getImageLoader();
@@ -87,19 +89,28 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
         return slistSokoni.size();
     }
 
-   public static class ViewHolderSokoni extends RecyclerView.ViewHolder {
+   public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
 
-        public ViewHolderSokoni(View itemView) {
+
+       public ViewHolderSokoni(View itemView) {
             super(itemView);
                 
             sokoThumbnail = (ImageView) itemView.findViewById(R.id.sokoThumbnail);
             sokoTitle = (TextView) itemView.findViewById(R.id.sokoTitle);
             sokoGenre = (TextView) itemView.findViewById(R.id.sokoRating);
 
+
+            itemView.setOnClickListener(this);
         }
-    }
+
+       @Override
+       public void onClick(View view) {
+           Toast.makeText(context, "Item Clicked at " +getPosition(),Toast.LENGTH_LONG).show();
+
+       }
+   }
 }

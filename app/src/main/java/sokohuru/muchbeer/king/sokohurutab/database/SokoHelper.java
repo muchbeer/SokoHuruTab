@@ -25,14 +25,7 @@ public class SokoHelper extends SQLiteOpenHelper {
     public static final String columnRATING = "rating";
     public static final String columnYEAR = "releasingYear";
 
-    private static final String CREATE_TABLE_SOKONI =
-            "CREATE TABLE " + tableSokoni + "(" +
-                    columnUID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    columnTITLE + " TEXT, " +
-                    columnIMAGE + " TEXT, " +
-                    columnRATING + " TEXT " +
-                    columnGENRE + " TEXT " +
-                    "):";
+
 
     public SokoHelper(Context context) {
         super(context, dbName, null, dbVersion);
@@ -43,7 +36,16 @@ public class SokoHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         try {
+            String CREATE_TABLE_SOKONI =
+                    "CREATE TABLE " + tableSokoni + "(" +
+                            columnUID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            columnTITLE + " TEXT, " +
+                            columnIMAGE + " TEXT, " +
+                            columnRATING + " TEXT " +
+                            columnGENRE + " TEXT " +
+                            "):";
             db.execSQL(CREATE_TABLE_SOKONI);
+
             L.m("create table sokoni executed");
         }catch (SQLiteException exception) {
             L.t(mContext, exception + "");
@@ -55,13 +57,13 @@ public class SokoHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int olderVersion, int newVersion) {
 
 
-        if(newVersion>olderVersion)
+       // if(newVersion>olderVersion)
           //  copyDatabase();
 
         try {
             L.m("upgrade table sokoni executed");
 
-            db.execSQL(" DROP TABLE " + tableSokoni + " IF EXISTS: ");
+            db.execSQL(" DROP TABLE IF EXISTS " + tableSokoni );
             onCreate(db);
         }catch (SQLiteException exception) {
             L.t(mContext, exception + "");

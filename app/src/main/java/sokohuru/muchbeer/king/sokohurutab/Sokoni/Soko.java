@@ -22,6 +22,7 @@ public class Soko implements Parcelable{
     }
 
     public Soko(Parcel input) {
+        id =input.readInt();
         title=input.readString();
         image=input.readString();
         rating=input.readString();
@@ -95,6 +96,7 @@ public class Soko implements Parcelable{
     @Override
     public String toString() {
         return
+                "ID: " +id+
                 "Title: "+title+
                 "Image: " + image+
                 "Release Year: "+ releaseYear+
@@ -111,6 +113,7 @@ public class Soko implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         L.m("writeToParcel Movie");
+        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(image);
         parcel.writeString(genre);

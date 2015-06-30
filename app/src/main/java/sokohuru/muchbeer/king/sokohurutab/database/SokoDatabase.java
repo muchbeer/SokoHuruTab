@@ -3,6 +3,8 @@ package sokohuru.muchbeer.king.sokohurutab.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import java.util.ArrayList;
@@ -15,11 +17,11 @@ import sokohuru.muchbeer.king.sokohurutab.loggin.L;
  */
 public class SokoDatabase {
 
-    private SokoHelper  mHelper;
+     SokoHelper2  mHelper;
     private SQLiteDatabase mDatabase;
 
     public SokoDatabase(Context context) {
-        mHelper = new SokoHelper(context);
+        mHelper = new SokoHelper2(context);
         mDatabase=mHelper.getWritableDatabase();
 
     }
@@ -32,7 +34,7 @@ public class SokoDatabase {
         }
 
         //create a sql prepared statement
-        String sql = "INSERT INTO " + SokoHelper.tableSokoni +
+        String sql = "INSERT INTO " + SokoHelper2.tableSokoni +
                 " VALUES (?,?,?,?,?):";
 
         //compile the statement and start a transaction
@@ -62,14 +64,14 @@ public class SokoDatabase {
 
         //get a list of columns to be retrieved, we need all of them
         String[] columns = {
-                SokoHelper.columnUID,
-                SokoHelper.columnTITLE,
-                SokoHelper.columnIMAGE,
-                SokoHelper.columnGENRE,
-                SokoHelper.columnRATING
+                SokoHelper2.columnUID,
+                SokoHelper2.columnTITLE,
+                SokoHelper2.columnIMAGE,
+                SokoHelper2.columnGENRE,
+                SokoHelper2.columnRATING
 
         };
-        Cursor cursor =mDatabase.query(SokoHelper.tableSokoni,
+        Cursor cursor =mDatabase.query(SokoHelper2.tableSokoni,
                 columns, null,null,null,null,null);
 
         if(cursor !=null && cursor.moveToFirst()) {
@@ -83,10 +85,10 @@ public class SokoDatabase {
                 //column first
                 //find the data of the column using that inded and finally set our blank movie object to contain our data
 
-                sokoni.setTitle(cursor.getString(cursor.getColumnIndex(SokoHelper.columnTITLE)));
-                sokoni.setImage(cursor.getString(cursor.getColumnIndex(SokoHelper.columnIMAGE)));
-                sokoni.setGenre(cursor.getString(cursor.getColumnIndex(SokoHelper.columnGENRE)));
-                sokoni.setRating(cursor.getString(cursor.getColumnIndex(SokoHelper.columnRATING)));
+                sokoni.setTitle(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnTITLE)));
+                sokoni.setImage(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnIMAGE)));
+                sokoni.setGenre(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnGENRE)));
+                sokoni.setRating(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnRATING)));
 
                 L.m("getting movie object " + sokoni);
                 listSokoni.add(sokoni);
@@ -97,8 +99,68 @@ public class SokoDatabase {
     }
 
     public void deleteAll() {
-        mDatabase.delete(SokoHelper.tableSokoni, null, null);
+        mDatabase.delete(SokoHelper2.tableSokoni, null, null);
     }
 
+    private class SokoHelper2 extends SQLiteOpenHelper {
+
+
+
+        private Context mContext;
+        private static final String dbName = "sokoni";
+        private static final int dbVersion = 1;
+        public static final String tableSokoni = "sokoniTable";
+        public static final String columnUID = "_id";
+        public static final String columnTITLE = "title";
+        public static final String columnIMAGE = "image";
+        public static final String columnGENRE = "genre";
+        public static final String columnRATING = "rating";
+        public static final String columnYEAR = "releasingYear";
+
+
+
+        public SokoHelper2(Context context) {
+            super(context, dbName, null, dbVersion);
+            mContext = context;
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+
+            try {
+                String CREATE_TABLE_SOKONI =
+                        "CREATE TABLE " + tableSokoni + "(" +
+                                columnUID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                columnTITLE + " TEXT, " +
+                                columnIMAGE + " TEXT, " +
+                                columnRATING + " TEXT " +
+                                columnGENRE + " TEXT " +
+                                "):";
+                db.execSQL(CREATE_TABLE_SOKONI);
+
+                L.m("create table sokoni executed");
+            }catch (SQLiteException exception) {
+                L.t(mContext, exception + "");
+            }
+
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int olderVersion, int newVersion) {
+
+
+            // if(newVersion>olderVersion)
+            //  copyDatabase();
+
+            try {
+                L.m("upgrade table sokoni executed");
+
+                db.execSQL(" DROP TABLE IF EXISTS " + tableSokoni );
+                onCreate(db);
+            }catch (SQLiteException exception) {
+                L.t(mContext, exception + "");
+            }
+        }
+    }
 
 }
