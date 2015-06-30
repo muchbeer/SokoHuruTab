@@ -1,6 +1,7 @@
 package sokohuru.muchbeer.king.sokohurutab.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,11 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 
+import sokohuru.muchbeer.king.sokohurutab.MainActivity;
 import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.SokoHuruFragment;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
+import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
 import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 
@@ -28,6 +32,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private final LayoutInflater layoutInflater;
     private final VolleySingleton volleySingleTon;
     private final ImageLoader imageLoader;
+    private int SHARE_CODE = 1;
 
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
@@ -91,7 +96,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
    public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView sokoThumbnail;
+       private static final int SHARING_CODE = 1;
+       public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
 
@@ -110,7 +116,14 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
        @Override
        public void onClick(View view) {
            Toast.makeText(context, "Item Clicked at " +getPosition(),Toast.LENGTH_LONG).show();
+           Intent i = new Intent(context, MainActivityDetail.class);
+
+           ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
 
        }
+
+
    }
+
+
 }
