@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sokohuru.muchbeer.king.sokohurutab.R;
 
@@ -33,7 +34,8 @@ public class MainActivityDetail extends ActionBarActivity {
         //Getting item details from Intent
         Intent collectDataIntent = getIntent();
         position = collectDataIntent.getStringExtra(TAG_POSITION);
-        txGetResult.setText(position);
+       txGetResult.setText(position);
+        Toast.makeText(getApplication(), "The new position is: "+ position, Toast.LENGTH_LONG).show();
 
 
         btGetPosition.setOnClickListener(new View.OnClickListener() {

@@ -278,35 +278,19 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public void itemClicked(View view, int position) {
-        Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
+       // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
         // result = String.valueOf(position);
         Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
 
-       startIntent.putExtra(TAG_POSITION, position);
+       startIntent.putExtra(TAG_POSITION, "1");
         startActivityForResult(startIntent, SHARING_CODE);
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==SHARING_CODE) {
-            //if result code is sharing cod
-            // means user edited/deleted item
-            //reload this screen again
-           // startIntent.putExtra(TAG_POSITION, position);
-
-
-         //  Intent positionResult = data.putExtra(TAG_POSITION, result);
-
-          //  setResult(2,intent);
-          //  finish();//finishing activity
 
 
 
 
-        }
 
-    }
+
 }
