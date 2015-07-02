@@ -36,6 +36,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
+    private static ClickListener clickListener;
+
 
     public AdapterSoko(Context context) {
         this.context = context;
@@ -89,7 +91,9 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
   }
 
-
+public void setClickListener(ClickListener clickListener) {
+    this.clickListener = clickListener;
+}
 
     @Override
     public int getItemCount() {
@@ -102,6 +106,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
        public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
+     //  private ClickListener clickListener;
 
 
        public ViewHolderSokoni(View itemView) {
@@ -120,18 +125,21 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
        @Override
        public void onClick(View view) {
-           Toast.makeText(context, "Item Clicked at " +getPosition(),Toast.LENGTH_LONG).show();
-           Intent i = new Intent(context, MainActivityDetail.class);
+         //  Intent startIntent = new Intent(context, MainActivityDetail.class);
 
-           ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
+         //  ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
 
+            if(clickListener!=null) {
+                clickListener.itemClicked(view, getPosition());
+
+            }
        }
 
 
    }
 public interface ClickListener{
 
-    public void itemSokoClicked(View view, int position);
+    public void itemClicked(View view, int position);
 }
 
 }

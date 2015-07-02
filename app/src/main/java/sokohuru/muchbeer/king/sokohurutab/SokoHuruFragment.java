@@ -2,6 +2,7 @@ package sokohuru.muchbeer.king.sokohurutab;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
 import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
+import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
 import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
 import sokohuru.muchbeer.king.sokohurutab.extras.Keys;
 import sokohuru.muchbeer.king.sokohurutab.loggin.L;
@@ -45,7 +48,7 @@ import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SokoHuruFragment extends Fragment {
+public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +57,8 @@ public class SokoHuruFragment extends Fragment {
 
     public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
     private static final String STATE_SOKO = "State Sokoni";
+    private static final int SHARING_CODE = 1;
+    private static final String TAG_POSITION = "position";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,11 +70,16 @@ public class SokoHuruFragment extends Fragment {
     private RecyclerView listSokoni;
     private RecyclerView.LayoutManager sLayoutManager;
 
+
+
+
     // private OnFragmentInteractionListener mListener;
     private VolleySingleton volleySingleton;
 
     private AdapterSoko adapterSoko;
     private TextView mTextError;
+    private TextView txtPosition;
+    private String result;
 
     /**
      * Use this factory method to create a new instance of
@@ -246,11 +256,13 @@ public class SokoHuruFragment extends Fragment {
 
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
+        txtPosition = (TextView) view.findViewById(R.id.position);
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
         listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getActivity());
+        adapterSoko.setClickListener(this);
         listSokoni.setAdapter(adapterSoko);
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
@@ -264,4 +276,37 @@ public class SokoHuruFragment extends Fragment {
     }
 
 
+    @Override
+    public void itemClicked(View view, int position) {
+        Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
+        // result = String.valueOf(position);
+        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
+
+       startIntent.putExtra(TAG_POSITION, position);
+        startActivityForResult(startIntent, SHARING_CODE);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==SHARING_CODE) {
+            //if result code is sharing cod
+            // means user edited/deleted item
+            //reload this screen again
+           // startIntent.putExtra(TAG_POSITION, position);
+
+
+         //  Intent positionResult = data.putExtra(TAG_POSITION, result);
+
+          //  setResult(2,intent);
+          //  finish();//finishing activity
+
+
+
+
+        }
+
+    }
 }
