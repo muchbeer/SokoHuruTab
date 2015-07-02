@@ -56,6 +56,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
        View view =  layoutInflater.inflate(R.layout.fragment_soko_lookfeel, parent, false);
         ViewHolderSokoni viewHolderSokoni = new ViewHolderSokoni(view);
+
+
         return viewHolderSokoni;
     }
 
@@ -111,7 +113,10 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
 
             itemView.setOnClickListener(this);
+
+
         }
+
 
        @Override
        public void onClick(View view) {
@@ -124,6 +129,9 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
 
    }
+public interface ClickListener{
 
+    public void itemSokoClicked(View view, int position);
+}
 
 }

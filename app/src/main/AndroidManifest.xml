@@ -23,6 +23,10 @@
             android:name=".detail.MainActivityDetail"
             android:label="@string/title_activity_main_activity_detail" >
         </activity>
+        <activity
+            android:name=".itemclick.MainActivityClick"
+            android:label="@string/title_activity_main_activity_click" >
+        </activity>
     </application>
 
 </manifest>
