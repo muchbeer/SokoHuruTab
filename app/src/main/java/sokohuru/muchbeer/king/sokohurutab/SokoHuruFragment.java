@@ -282,7 +282,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         // result = String.valueOf(position);
         Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
 
-        startIntent.putExtra(TAG_POSITION, "1");
+        startIntent.putExtra(TAG_POSITION, position);
         startActivityForResult(startIntent, SHARING_CODE);
 
     }

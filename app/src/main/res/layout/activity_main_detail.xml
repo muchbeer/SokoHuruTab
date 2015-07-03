@@ -1,33 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/container3"
     tools:context="sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail">
 
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginRight="8dp"
-        android:layout_gravity="center"/>
 
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="28dp"
-        android:text="Item Name"/>
-
-    <TextView
-        android:padding="12dp"
-        android:textSize="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New way is comming" />
-
-
-</LinearLayout>
+</FrameLayout>

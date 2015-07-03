@@ -1,5 +1,7 @@
 package sokohuru.muchbeer.king.sokohurutab.detail;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,87 +18,22 @@ import com.android.volley.toolbox.ImageLoader;
 
 import sokohuru.muchbeer.king.sokohurutab.R;
 import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
+import sokohuru.muchbeer.king.sokohurutab.itemclick.FragmentClick;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 
 public class MainActivityDetail extends ActionBarActivity {
-
-    private Button btGetPosition;
-    //private static final int SHARING_CODE = 1;
-    private TextView txGetResult;
-
-   // private static final String TAG_POSITION = "position";
-    private static final String TAG_NAME = "name";
-    private String position;
-
-// Getting good detail
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
-    private static final String STATE_SOKO = "State Sokoni";
-    private static final int SHARING_CODE = 1;
-    private static final String TAG_POSITION = "position";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private ImageLoader imageLoader;
-    private RequestQueue requestQueue;
-
-    private RecyclerView listSokoni;
-    private RecyclerView.LayoutManager sLayoutManager;
-
-
-
-
-    // private OnFragmentInteractionListener mListener;
-    private VolleySingleton volleySingleton;
-
-    private AdapterSoko adapterSoko;
-    private TextView mTextError;
-    private TextView txtName;
-    private String result;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_detail);
 
+        FragmentClick fragment = new FragmentClick();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.container3, fragment);
 
-        //Getting item details from Intent
-        Intent collectDataIntent = getIntent();
-        position = collectDataIntent.getStringExtra(TAG_POSITION);
-       txGetResult.setText(position);
-        Toast.makeText(getApplication(), "The new position is: "+ position, Toast.LENGTH_LONG).show();
-
-
-        btGetPosition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //String message=txGetResult.setText();
-
-
-                //  Intent intent=new Intent();
-                //  intent.putExtra("MESSAGE",message);
-                //  setResult(SHARING_CODE,intent);
-                //     finish();//finishing activity
-
-
-
-              //  setResult(SHARING_CODE, collectDataIntent);
-              //  finish();
-
-
-
-            }
-        });
-
-
-
+        fragmentTransaction.commit();
 
     }
 
