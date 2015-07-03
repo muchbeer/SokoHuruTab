@@ -4,15 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <FrameLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/container">
+        android:orientation="vertical"
+        >
 
-    <RecyclerView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"></RecyclerView>
+        android:text="You the best"
+        android:textSize="28dp"
+        android:id="@+id/name"></TextView>
 
-    </FrameLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -3,6 +3,7 @@ package sokohuru.muchbeer.king.sokohurutab.detail;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,17 +11,54 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+
 import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
+import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 
 public class MainActivityDetail extends ActionBarActivity {
 
     private Button btGetPosition;
-    private static final int SHARING_CODE = 1;
+    //private static final int SHARING_CODE = 1;
     private TextView txGetResult;
 
-    private static final String TAG_POSITION = "position";
+   // private static final String TAG_POSITION = "position";
     private static final String TAG_NAME = "name";
     private String position;
+
+// Getting good detail
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
+    private static final String STATE_SOKO = "State Sokoni";
+    private static final int SHARING_CODE = 1;
+    private static final String TAG_POSITION = "position";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private ImageLoader imageLoader;
+    private RequestQueue requestQueue;
+
+    private RecyclerView listSokoni;
+    private RecyclerView.LayoutManager sLayoutManager;
+
+
+
+
+    // private OnFragmentInteractionListener mListener;
+    private VolleySingleton volleySingleton;
+
+    private AdapterSoko adapterSoko;
+    private TextView mTextError;
+    private TextView txtName;
+    private String result;
+
 
 
     @Override
@@ -28,8 +66,6 @@ public class MainActivityDetail extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_detail);
 
-        btGetPosition = (Button) findViewById(R.id.btPosition);
-        txGetResult = (TextView) findViewById(R.id.txtResult);
 
         //Getting item details from Intent
         Intent collectDataIntent = getIntent();

@@ -1,7 +1,11 @@
 package sokohuru.muchbeer.king.sokohurutab.itemclick;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+
+import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,29 +23,24 @@ public class MainActivityClick extends FragmentActivity {
 
         // Check whether the activity is using the layout version with
         // the fragment_container FrameLayout. If so, we must add the first fragment
-        if (findViewById(R.id.container) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
-            }
+        FragmentClick fragment = new FragmentClick();
 
-            FragmentClick firstFragment = new FragmentClick();
+        FragmentManager fm = getFragmentManager();
 
-            // In case this activity was started with special instructions from an Intent,
-            // pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, firstFragment).commit();
+        fragmentTransaction.replace(R.id.container2, fragment);
+
+        fragmentTransaction.commit();
 
 
-        }
+
 
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

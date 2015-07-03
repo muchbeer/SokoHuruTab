@@ -251,7 +251,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-    View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
+        View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
         // Inflate the layout for this fragment
 
 
@@ -278,11 +278,11 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public void itemClicked(View view, int position) {
-       // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
         // result = String.valueOf(position);
         Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
 
-       startIntent.putExtra(TAG_POSITION, "1");
+        startIntent.putExtra(TAG_POSITION, "1");
         startActivityForResult(startIntent, SHARING_CODE);
 
     }
