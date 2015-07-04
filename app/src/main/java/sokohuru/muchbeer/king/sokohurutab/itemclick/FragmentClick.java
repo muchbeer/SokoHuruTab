@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +64,7 @@ public class FragmentClick  extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ImageLoader imageLoader;
+    private ImageLoader mImageLoader;
     private RequestQueue requestQueue;
    // private ArrayList<Soko> listMovies = new ArrayList<>();
 
@@ -82,6 +83,7 @@ public class FragmentClick  extends Fragment {
     String result;
   //  private String position;
     private String title;
+    private NetworkImageView loadImageView;
     //  private char[] title;
 
 
@@ -154,7 +156,7 @@ public class FragmentClick  extends Fragment {
         requestQueue.add(request);
     }
 
-    private void parseJSONResponse(JSONObject response, int position) {
+    private void parseJSONResponse(final JSONObject response, int position) {
 
         if (response == null || response.length() == 0) {
             L.t(getActivity(), "Refresh data");
@@ -177,12 +179,27 @@ public class FragmentClick  extends Fragment {
                     title = currentMarket.getString(Keys.EndpointBoxOffice.KEY_TITLE);
                 }
 
+                if(currentMarket.has(Keys.EndpointBoxOffice.KEY_IMAGE) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_IMAGE)) {
+
+                    imaging = currentMarket.getString(Keys.EndpointBoxOffice.KEY_IMAGE);
+
+                }
+
+
+
                 Soko sokoni = new Soko();
 
                 //sokoni setTitle
                 sokoni.setTitle(title);
+                sokoni.setImage(imaging);
 
                 txtName.setText(title);
+
+                mImageLoader = VolleySingleton.getsInstance().getImageLoader();
+
+                loadImageView.setImageUrl(imaging, mImageLoader);
+
+
                 Toast.makeText(getActivity(), "Item is: " + title,Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
@@ -197,7 +214,8 @@ public class FragmentClick  extends Fragment {
        // adapter = new ListAdapterHolder(mActivity);
 
         txtName = (TextView) rootView.findViewById(R.id.name);
-        mTextError = (TextView) rootView.findViewById(R.id.errors);
+        mTextError = (TextView) rootView.findViewById(R.id.txtError);
+        loadImageView = (NetworkImageView) rootView.findViewById(R.id.image);
 
         //Getting item details from Intent
         Intent collectDataIntent = getActivity().getIntent();

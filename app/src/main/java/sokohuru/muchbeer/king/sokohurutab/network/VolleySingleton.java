@@ -1,5 +1,6 @@
 package sokohuru.muchbeer.king.sokohurutab.network;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
@@ -16,8 +17,14 @@ public class VolleySingleton {
     private RequestQueue mRequestQueue;
     private ImageLoader imageLoader;
 
+  //  private static Context mCtx;
+
 
     private VolleySingleton() {
+
+       // mCtx = context;
+        mRequestQueue = getRequestQueue();
+
         mRequestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
         imageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
             private LruCache<String, Bitmap> cache = new LruCache<>((int)Runtime.getRuntime().maxMemory()/1024/8);
@@ -34,12 +41,13 @@ public class VolleySingleton {
         });
     }
 
-    public  static VolleySingleton getsInstance() {
+    public  static synchronized VolleySingleton getsInstance() {
         if(sInstance==null) {
             sInstance = new VolleySingleton();
         }
         return sInstance;
     }
+
 
     public RequestQueue getRequestQueue() {
         return mRequestQueue;
