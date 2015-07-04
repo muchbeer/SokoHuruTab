@@ -2,12 +2,14 @@ package sokohuru.muchbeer.king.sokohurutab.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 import android.util.LruCache;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
+import sokohuru.muchbeer.king.sokohurutab.detail.LruBitmapCache;
 
 /**
  * Created by muchbeer on 5/19/2015.
@@ -48,7 +50,17 @@ public class VolleySingleton {
         return sInstance;
     }
 
+    // Returns a cache size equal to approximately three screens worth of images.
+    public static int getCacheSize(Context ctx) {
+        final DisplayMetrics displayMetrics = ctx.getResources().
+                getDisplayMetrics();
+        final int screenWidth = displayMetrics.widthPixels;
+        final int screenHeight = displayMetrics.heightPixels;
+        // 4 bytes per pixel
+        final int screenBytes = screenWidth * screenHeight * 4;
 
+        return screenBytes * 3;
+    }
     public RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
