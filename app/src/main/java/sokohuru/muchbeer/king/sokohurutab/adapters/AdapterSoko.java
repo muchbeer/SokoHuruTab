@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,7 @@ import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 /**
  * Created by muchbeer on 6/19/2015.
  */
-public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> {
+public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> implements Filterable {
 
 
     private final LayoutInflater layoutInflater;
@@ -34,6 +36,10 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private final ImageLoader imageLoader;
     private int SHARE_CODE = 1;
 
+    private Filter planetFilter;
+
+    private ArrayList<Soko> planetList;
+    private ArrayList<Soko> origPlanetList;
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
@@ -100,7 +106,66 @@ public void setClickListener(ClickListener clickListener) {
         return slistSokoni.size();
     }
 
-   public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @Override
+    public Filter getFilter() {
+
+        if (planetFilter == null)
+            planetFilter = new PlanetFilter();
+
+        return planetFilter;
+    }
+
+
+    private class PlanetFilter extends Filter {
+
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            // We implement here the filter logic
+            if (constraint == null || constraint.length() == 0) {
+                // No filter implemented we return all the list
+                results.values = origPlanetList;
+                results.count = origPlanetList.size();
+            } else {
+
+                ArrayList<Soko> nPlanetListsearchSokoni = new ArrayList<>();
+
+                for(Soko p : planetList)  {
+                    if(p.getTitle().toUpperCase().startsWith(constraint.toString().toUpperCase()))
+                    nPlanetListsearchSokoni.add(p);
+
+                }
+
+                results.values = nPlanetListsearchSokoni;
+                results.count = nPlanetListsearchSokoni.size();
+
+
+
+
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+            // Now we have to inform the adapter about the new list filtered
+            if (filterResults.count == 0 ) {
+                //notifyDataSetInva
+            }
+            else {
+                planetList = (ArrayList<Soko>) filterResults.values;
+                notifyDataSetChanged();
+            }
+
+        }
+    }
+
+    public void resetData() {
+        planetList = origPlanetList;
+    }
+        public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
        private static final int SHARING_CODE = 1;
        public ImageView sokoThumbnail;

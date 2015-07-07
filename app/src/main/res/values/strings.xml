@@ -15,5 +15,6 @@
     <string name="title_activity_main_activity_click">MainActivityClick</string>
     <string name="menuSearch">Search</string>
     <string name="search_hint">Samsung</string>
+    <string name="searchitem">Search item</string>
 
 </resources>

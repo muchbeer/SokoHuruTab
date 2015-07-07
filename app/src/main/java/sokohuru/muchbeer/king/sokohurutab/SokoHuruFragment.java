@@ -11,6 +11,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -285,7 +287,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         else {
             sendJsonRequest();
         }
-        return view;
+
+
+            return view;
 
     }
 
@@ -314,6 +318,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                 return true;
             case R.id.menu_search:
 //                showHelp();
+
+                handleMenuSearch();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -375,6 +381,34 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     private void doSearch() {
         //
+
+        //autosearching of item
+        edtSeach.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // When user changed the Text
+                //  ((SimpleAdapter) getProduct.this.adapter).getFilter().filter(cs);
+
+              //  (SokoHuruFragment.this.adapterSoko).getFilter().filter(charSequence);
+                adapterSoko.getFilter().filter(charSequence);
+                //   AllProductsActivity.this.adapter.get
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        
     }
 
 
