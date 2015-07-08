@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.android.gms.analytics.GoogleAnalytics;
 
 import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
 import sokohuru.muchbeer.king.sokohurutab.itemclick.FragmentClick;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
@@ -27,6 +29,9 @@ public class MainActivityDetail extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_detail);
+
+        //Get a Tracker (should auto-report)
+        ((MyApplication) getApplication()).getTracker(MyApplication.TrackerName.APP_TRACKER);
 
         FragmentClick fragment = new FragmentClick();
         FragmentManager fm = getFragmentManager();
@@ -57,5 +62,19 @@ public class MainActivityDetail extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Get an Analytics tracker to report app starts & uncaught exceptions etc.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Stop the analytics tracking
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 }

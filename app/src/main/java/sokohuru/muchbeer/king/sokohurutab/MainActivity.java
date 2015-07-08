@@ -10,12 +10,21 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.adapters.ViewPagerAdapter;
 import sokohuru.muchbeer.king.sokohurutab.tab.SlidingTabLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MainActivity extends ActionBarActivity {
+
+
+    //Google Analytic
 
     // Declaring Your View and Variables
 
@@ -32,6 +41,19 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try
+        {
+            Tracker t = ((MyApplication) getApplication()).getTracker(
+                    MyApplication.TrackerName.APP_TRACKER);
+
+            t.setScreenName("MyScreenName");
+
+            t.send(new HitBuilders.AppViewBuilder().build());
+        }
+        catch(Exception  e)
+        {
+            Toast.makeText(getApplicationContext(), "Error" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
         toolbar = (Toolbar) findViewById(R.id.appbar);
@@ -90,6 +112,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "Check for success", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -110,5 +133,20 @@ public class MainActivity extends ActionBarActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Get an Analytics tracker to report app starts & uncaught exceptions etc.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    //  GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//Stop the analytics tracking
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 }

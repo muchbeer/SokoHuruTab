@@ -314,10 +314,12 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Toast.makeText(getActivity(),"This is zone for Settings", Toast.LENGTH_LONG).show();
                 //  newGame();
                 return true;
             case R.id.menu_search:
 //                showHelp();
+                Toast.makeText(getActivity(),"We need to work hard for this", Toast.LENGTH_LONG).show();
 
                 handleMenuSearch();
                 return true;
