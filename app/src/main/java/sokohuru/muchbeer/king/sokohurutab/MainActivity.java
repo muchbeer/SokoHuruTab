@@ -20,6 +20,7 @@ import sokohuru.muchbeer.king.sokohurutab.tab.SlidingTabLayout;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.pushbots.push.Pushbots;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -40,6 +41,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Pushbots.sharedInstance().init(this);
 
         try
         {
