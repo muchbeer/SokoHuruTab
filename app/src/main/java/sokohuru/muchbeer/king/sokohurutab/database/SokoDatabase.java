@@ -140,7 +140,7 @@ public class SokoDatabase {
 
                 L.m("create table sokoni executed");
             }catch (SQLiteException exception) {
-                L.t(mContext, exception + "");
+                L.T(mContext, exception + "");
             }
 
         }
@@ -158,7 +158,7 @@ public class SokoDatabase {
                 db.execSQL(" DROP TABLE IF EXISTS " + tableSokoni );
                 onCreate(db);
             }catch (SQLiteException exception) {
-                L.t(mContext, exception + "");
+                L.T(mContext, exception + "");
             }
         }
     }

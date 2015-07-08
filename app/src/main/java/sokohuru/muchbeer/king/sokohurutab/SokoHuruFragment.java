@@ -288,7 +288,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
             sendJsonRequest();
         }
 
-
+setHasOptionsMenu(true);
             return view;
 
     }
