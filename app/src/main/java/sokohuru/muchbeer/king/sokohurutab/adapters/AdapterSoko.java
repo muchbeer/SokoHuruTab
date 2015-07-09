@@ -28,7 +28,7 @@ import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 /**
  * Created by muchbeer on 6/19/2015.
  */
-public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> implements Filterable {
+public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> {
 
 
     private final LayoutInflater layoutInflater;
@@ -39,7 +39,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private Filter planetFilter;
 
     private ArrayList<Soko> planetList;
-    private ArrayList<Soko> origPlanetList;
+    private ArrayList<Soko> origPlanetList = new ArrayList<>();
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
@@ -57,12 +57,66 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     public void setSokoList(ArrayList<Soko> listSokoni) {
         this.slistSokoni = listSokoni;
         notifyItemRangeChanged(0, listSokoni.size());
+        this.origPlanetList = listSokoni;
+    }
+
+    public void animateTo(ArrayList<Soko> models) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+    }
+
+    private void applyAndAnimateRemovals(ArrayList<Soko> newModels) {
+        for (int i = slistSokoni.size() - 1; i >= 0; i--) {
+            final Soko model = slistSokoni.get(i);
+            if (!newModels.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+
+
+    private void applyAndAnimateAdditions(ArrayList<Soko> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final Soko model = newModels.get(i);
+            if (!slistSokoni.contains(model)) {
+                addItem(i, model);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(ArrayList<Soko> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final Soko model = newModels.get(toPosition);
+            final int fromPosition = slistSokoni.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    public Soko removeItem(int position) {
+        final Soko model = slistSokoni.remove(position);
+        notifyItemRemoved(position);
+        return model;
+    }
+
+    public void addItem(int position, Soko model) {
+        slistSokoni.add(position, model);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final Soko model = slistSokoni.remove(fromPosition);
+        slistSokoni.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
     public AdapterSoko.ViewHolderSokoni onCreateViewHolder(ViewGroup parent, int viewType) {
 
-       View view =  layoutInflater.inflate(R.layout.fragment_soko_lookfeel, parent, false);
+        View view =  layoutInflater.inflate(R.layout.fragment_soko_lookfeel, parent, false);
         ViewHolderSokoni viewHolderSokoni = new ViewHolderSokoni(view);
 
 
@@ -106,65 +160,7 @@ public void setClickListener(ClickListener clickListener) {
         return slistSokoni.size();
     }
 
-    @Override
-    public Filter getFilter() {
 
-        if (planetFilter == null)
-            planetFilter = new PlanetFilter();
-
-        return planetFilter;
-    }
-
-
-    private class PlanetFilter extends Filter {
-
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-
-            // We implement here the filter logic
-            if (constraint == null || constraint.length() == 0) {
-                // No filter implemented we return all the list
-                results.values = origPlanetList;
-                results.count = origPlanetList.size();
-            } else {
-
-                ArrayList<Soko> nPlanetListsearchSokoni = new ArrayList<>();
-
-                for(Soko p : planetList)  {
-                    if(p.getTitle().toUpperCase().startsWith(constraint.toString().toUpperCase()))
-                    nPlanetListsearchSokoni.add(p);
-
-                }
-
-                results.values = nPlanetListsearchSokoni;
-                results.count = nPlanetListsearchSokoni.size();
-
-
-
-
-            }
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
-            // Now we have to inform the adapter about the new list filtered
-            if (filterResults.count == 0 ) {
-                //notifyDataSetInva
-            }
-            else {
-                planetList = (ArrayList<Soko>) filterResults.values;
-                notifyDataSetChanged();
-            }
-
-        }
-    }
-
-    public void resetData() {
-        planetList = origPlanetList;
-    }
         public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
        private static final int SHARING_CODE = 1;

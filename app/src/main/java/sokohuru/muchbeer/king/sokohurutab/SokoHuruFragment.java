@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -60,7 +62,7 @@ import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener{
+public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -275,11 +277,13 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         txtPosition = (TextView) view.findViewById(R.id.position);
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
+        listSokoni.setHasFixedSize(true);
         listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getActivity());
         adapterSoko.setClickListener(this);
         listSokoni.setAdapter(adapterSoko);
+      // listSearch = adapterSoko.setSokoList();
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
             adapterSoko.setSokoList(listMovies);
@@ -289,7 +293,11 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         }
 
 setHasOptionsMenu(true);
-            return view;
+        // TextFilter
+   //     listSokoni.setTextFilterEnabled(true);
+
+        return view;
+
 
     }
 
@@ -297,121 +305,13 @@ setHasOptionsMenu(true);
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
 
-        super.onCreateOptionsMenu(menu, inflater);
+        final MenuItem item = menu.findItem(R.id.menu_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        mSearchAction = menu.findItem(R.id.menu_search);
-        super.onPrepareOptionsMenu(menu);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Toast.makeText(getActivity(),"This is zone for Settings", Toast.LENGTH_LONG).show();
-                //  newGame();
-                return true;
-            case R.id.menu_search:
-//                showHelp();
-                Toast.makeText(getActivity(),"We need to work hard for this", Toast.LENGTH_LONG).show();
-
-                handleMenuSearch();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    protected void handleMenuSearch(){
-        ActionBar action = ((ActionBarActivity)getActivity()).getSupportActionBar(); //get the actionbar
-
-        if(isSearchOpened){ //test if the search is open
-
-            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-
-            //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
-
-            //add the search icon in the action bar
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
-
-            isSearchOpened = false;
-        } else { //open the search entry
-
-            action.setDisplayShowCustomEnabled(true); //enable it to display a
-            // custom view in the action bar.
-            action.setCustomView(R.layout.searchbar);//add the custom view
-            action.setDisplayShowTitleEnabled(false); //hide the title
-
-            edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
-
-            //this is a listener to do a search when the user clicks on search button
-            edtSeach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        doSearch();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-
-            edtSeach.requestFocus();
-
-            //open the keyboard focused in the edtSearch
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
-
-
-            //add the close icon
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
-
-            isSearchOpened = true;
-        }
-    }
-
-    private void doSearch() {
-        //
-
-        //autosearching of item
-        edtSeach.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                // When user changed the Text
-                //  ((SimpleAdapter) getProduct.this.adapter).getFilter().filter(cs);
-
-              //  (SokoHuruFragment.this.adapterSoko).getFilter().filter(charSequence);
-                adapterSoko.getFilter().filter(charSequence);
-                //   AllProductsActivity.this.adapter.get
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        
-    }
 
 
     @Override
@@ -426,9 +326,31 @@ setHasOptionsMenu(true);
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String query) {
+      adapterSoko.setSokoList(listMovies);
+        final ArrayList<Soko> filteredModelList = filter(listMovies,   query);
+        adapterSoko.animateTo(filteredModelList);
+        listSokoni.scrollToPosition(0);
 
+        return true;
+    }
 
+    private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
+        query = query.toLowerCase();
 
-
+        final ArrayList<Soko> filteredModelList = new ArrayList<>();
+        for (Soko model : models) {
+            final String text = model.getTitle().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
 }
