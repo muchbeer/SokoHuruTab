@@ -3,7 +3,9 @@ package sokohuru.muchbeer.king.sokohurutab;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -59,8 +61,19 @@ public class MainActivity extends ActionBarActivity {
         }
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
-        toolbar = (Toolbar) findViewById(R.id.appbar);
-        setSupportActionBar(toolbar);
+      //  toolbar = (Toolbar) findViewById(R.id.appbar);
+     //   setSupportActionBar(toolbar);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+        }
+
+        final ActionBar ab = getSupportActionBar();
+       // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
