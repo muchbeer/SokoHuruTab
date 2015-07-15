@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -75,6 +76,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private static final String STATE_SOKO = "State Sokoni";
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
+
+    RecyclerView.LayoutManager mLayoutManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -280,7 +283,11 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
         listSokoni.setHasFixedSize(true);
-        listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // The number of Columns
+        mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        listSokoni.setLayoutManager(mLayoutManager);
+      //  listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getActivity());
         adapterSoko.setClickListener(this);

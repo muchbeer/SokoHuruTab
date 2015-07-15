@@ -70,9 +70,6 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-        final ActionBar ab = getSupportActionBar();
-       // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
 
 
 
