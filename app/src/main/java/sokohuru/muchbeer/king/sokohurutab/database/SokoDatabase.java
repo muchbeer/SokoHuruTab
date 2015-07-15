@@ -110,7 +110,7 @@ public class SokoDatabase {
         private static final String dbName = "sokoni";
         private static final int dbVersion = 1;
         public static final String tableSokoni = "sokoniTable";
-        public static final String columnUID = "_id";
+        public static final String columnUID = "id";
         public static final String columnTITLE = "title";
         public static final String columnIMAGE = "image";
         public static final String columnGENRE = "genre";
@@ -130,7 +130,7 @@ public class SokoDatabase {
             try {
                 String CREATE_TABLE_SOKONI =
                         "CREATE TABLE " + tableSokoni + "(" +
-                                columnUID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                columnUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                 columnTITLE + " TEXT, " +
                                 columnIMAGE + " TEXT, " +
                                 columnRATING + " TEXT " +
