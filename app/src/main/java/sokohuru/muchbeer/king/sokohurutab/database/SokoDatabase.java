@@ -49,7 +49,7 @@ public class SokoDatabase {
             statement.bindString(2, currentSoko.getTitle());
             statement.bindString(3, currentSoko.getImage());
             statement.bindString(4, currentSoko.getRating());
-            statement.bindString(5, currentSoko.getGenre());
+         //   statement.bindString(5, currentSoko.getGenre());
 
             L.m("inserting entry " + i);
         }
@@ -67,7 +67,7 @@ public class SokoDatabase {
                 SokoHelper2.columnUID,
                 SokoHelper2.columnTITLE,
                 SokoHelper2.columnIMAGE,
-                SokoHelper2.columnGENRE,
+              //  SokoHelper2.columnGENRE,
                 SokoHelper2.columnRATING
 
         };
@@ -87,7 +87,7 @@ public class SokoDatabase {
 
                 sokoni.setTitle(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnTITLE)));
                 sokoni.setImage(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnIMAGE)));
-                sokoni.setGenre(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnGENRE)));
+              //  sokoni.setGenre(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnGENRE)));
                 sokoni.setRating(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnRATING)));
 
                 L.m("getting movie object " + sokoni);
@@ -130,11 +130,11 @@ public class SokoDatabase {
             try {
                 String CREATE_TABLE_SOKONI =
                         "CREATE TABLE " + tableSokoni + "(" +
-                                columnUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                columnTITLE + " TEXT, " +
-                                columnIMAGE + " TEXT, " +
-                                columnRATING + " TEXT " +
-                                columnGENRE + " TEXT " +
+                                columnUID + " TEXT NULL, " +
+                                columnTITLE + " TEXT NULL, " +
+                                columnIMAGE + " TEXT NULL, " +
+                                columnRATING + " TEXT NULL " +
+
                                 "):";
                 db.execSQL(CREATE_TABLE_SOKONI);
 

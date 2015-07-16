@@ -71,8 +71,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
+        //Searchable
+        //handleIntent(getIntent());
+    }
 
-
+    private void startTab() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
@@ -94,31 +97,15 @@ public class MainActivity extends ActionBarActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
-
-        //Searchable
-        //handleIntent(getIntent());
     }
 
-
-
-    //Searchable methods
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search
-        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
+        startTab();
+
+
         //Get an Analytics tracker to report app starts & uncaught exceptions etc.
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
     //  GoogleAnalytics.getInstance(this).reportActivityStart(this);
@@ -129,5 +116,11 @@ public class MainActivity extends ActionBarActivity {
         super.onStop();
 //Stop the analytics tracking
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

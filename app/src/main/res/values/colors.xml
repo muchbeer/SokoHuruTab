@@ -11,5 +11,5 @@
     <color name="navDrawer">#EEE</color>
     <color name="recyclerView">#FCE4EC</color>
     <color name="cardLine">#F06292</color>
-
+    <color name="window_background">#FFF5F5F5</color>
 </resources>

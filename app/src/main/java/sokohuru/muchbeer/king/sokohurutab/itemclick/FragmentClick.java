@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.app.Fragment;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +67,7 @@ public class FragmentClick  extends Fragment {
 
     private int position;
 
+    String collapseTitle;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -85,8 +89,9 @@ public class FragmentClick  extends Fragment {
     private TextView txtName;
     String result;
   //  private String position;
-    private String title;
+     String title;
     private NetworkImageView loadImageView;
+    private CollapsingToolbarLayout collapsingToolbar;
     //  private char[] title;
 
 
@@ -159,7 +164,7 @@ public class FragmentClick  extends Fragment {
         requestQueue.add(request);
     }
 
-    private void parseJSONResponse(final JSONObject response, int position) {
+    public void parseJSONResponse(final JSONObject response, int position) {
 
         if (response == null || response.length() == 0) {
             L.t(getActivity(), "Refresh data");
@@ -197,6 +202,7 @@ public class FragmentClick  extends Fragment {
                 sokoni.setImage(imaging);
 
                 txtName.setText(title);
+                collapsingToolbar.setTitle(title);
 
                 mImageLoader = VolleySingleton.getsInstance().getImageLoader();
 
@@ -216,6 +222,17 @@ public class FragmentClick  extends Fragment {
       //  mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
        // adapter = new ListAdapterHolder(mActivity);
 
+     //   String tis = "george";
+
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+         collapsingToolbar =
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.collapsing_toolbar);
+       
+
+
         txtName = (TextView) rootView.findViewById(R.id.name);
         mTextError = (TextView) rootView.findViewById(R.id.txtError);
         loadImageView = (NetworkImageView) rootView.findViewById(R.id.image);
@@ -233,34 +250,13 @@ public class FragmentClick  extends Fragment {
         sendJsonRequest(position);
 
         //Searching option
-        setHasOptionsMenu(true);
+     //   setHasOptionsMenu(true);
 
 
         return rootView;
     }
 
+private void getPageTitile(String title) {
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-              //  newGame();
-                return true;
-            case R.id.menu_search:
-//                showHelp();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+}
 }

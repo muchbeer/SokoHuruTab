@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -65,7 +66,8 @@ import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener{
+public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener,
+        SearchView.OnQueryTextListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,6 +105,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private TextView mTextError;
     private TextView txtPosition;
     private String result;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * Use this factory method to create a new instance of
@@ -150,6 +153,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     }
 
     public void sendJsonRequest() {
+        // showing refresh animation before making http call
+       // swipeRefreshLayout.setRefreshing(true);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_SOKO,
                 null,
@@ -167,7 +172,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("Error: ", error.getMessage());
-                        L.t(getActivity(),error.toString());
+                    //    L.t(getActivity(),error.toString());
                         //if any error occurs in the network operations, show the TextView that contains the error message
                         mTextError.setVisibility(View.VISIBLE);
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
@@ -260,7 +265,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
                 // L.t(getActivity(), data.toString());
 
-                L.T(getActivity(), listMovies.toString());
+          //      L.T(getActivity(), listMovies.toString());
 
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
@@ -280,6 +285,10 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
         txtPosition = (TextView) view.findViewById(R.id.position);
+        
+        //Swipe refresh 
+  //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
         listSokoni.setHasFixedSize(true);
@@ -305,6 +314,12 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 setHasOptionsMenu(true);
         // TextFilter
    //     listSokoni.setTextFilterEnabled(true);
+      //  swipeRefreshLayout.setOnRefreshListener(this);
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
 
         return view;
 
@@ -363,4 +378,6 @@ setHasOptionsMenu(true);
         }
         return filteredModelList;
     }
+
+
 }

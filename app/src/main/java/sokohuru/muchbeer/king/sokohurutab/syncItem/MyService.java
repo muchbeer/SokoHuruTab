@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.SokoHuruFragment;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
 import sokohuru.muchbeer.king.sokohurutab.extras.Constants;

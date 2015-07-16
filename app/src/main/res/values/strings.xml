@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SokoHuruTab</string>
+    <string name="app_name">SokoHuru</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -16,5 +16,32 @@
     <string name="menuSearch">Search</string>
     <string name="search_hint">Samsung</string>
     <string name="searchitem">Search item</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_swipe_refresh">Swipe Refresh</string>
+    <string name="title_activity_mini_drawer">Mini Drawer</string>
+    <string name="title_activity_nested_toolbar">Nested Toolbar</string>
+    <string name="action_search">Search</string>
+    <string name="action_view_module">View</string>
+    <string name="title_quick_return">Quick Return</string>
+    <string name="title_activity_reveal">Reveal Animation</string>
+    <string name="title_activity_new_item">NewItemActivity</string>
+    <string name="title_activity_detail_activity_main">DetailActivityMain</string>
+   <string name="first">First</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="last">Last</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_add_main">AddMainActivity</string>
+
+    <string name="checkin">Checkin</string>
+    <string name="menu_settings">Settings</string>
+
+      <string name="title_fab_animations">FAB Animation</string>
+    <string name="title_activity_toolbar_test">ToolbarTestActivity</string>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+    <string name="title_activity_animate_toolbar">Animate Toolbar</string>
+    <string name="title_activity_tab_animation">Tabs Animation</string>
+    <string name="title_activity_sticky_view">StickyViewActivity</string>
 
 </resources>
