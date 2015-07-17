@@ -1,8 +1,4 @@
-package sokohuru.muchbeer.king.sokohurutab.tab;
-
-/**
- * Created by muchbeer on 6/22/2015.
- *//*
+/*
  * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,25 +14,23 @@ package sokohuru.muchbeer.king.sokohurutab.tab;
  * limitations under the License.
  */
 
+package sokohuru.muchbeer.king.sokohurutab.tab;
+
+import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Build;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-
-    import android.content.Context;
-        import android.graphics.Typeface;
-        import android.os.Build;
-        import android.support.v4.view.PagerAdapter;
-        import android.support.v4.view.ViewPager;
-        import android.util.AttributeSet;
-        import android.util.SparseArray;
-        import android.util.TypedValue;
-        import android.view.Gravity;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.HorizontalScrollView;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
-
-import sokohuru.muchbeer.king.sokohurutab.R;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
@@ -229,9 +223,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
-
-            tabTitleView.setTextColor(getResources().getColorStateList(R.color.selector));
-            tabTitleView.setTextSize(14);
         }
     }
 

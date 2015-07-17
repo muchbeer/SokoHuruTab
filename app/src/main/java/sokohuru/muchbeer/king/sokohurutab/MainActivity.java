@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
             Tracker t = ((MyApplication) getApplication()).getTracker(
                     MyApplication.TrackerName.APP_TRACKER);
 
-            t.setScreenName("MyScreenName");
+            t.setScreenName("MainPage");
 
             t.send(new HitBuilders.AppViewBuilder().build());
         }

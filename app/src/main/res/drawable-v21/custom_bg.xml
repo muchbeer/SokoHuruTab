@@ -10,7 +10,7 @@
     <item android:state_pressed="true">
 
         <shape>
-            <solid android:color="@color/background"/>
+            <solid android:color="@color/cardLine"/>
         </shape>
     </item>
 <item>

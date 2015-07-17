@@ -71,7 +71,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "position";
     private static final String ARG_PARAM2 = "param2";
 
     public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
@@ -107,20 +107,13 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private String result;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentSoko.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static SokoHuruFragment newInstance(String param1, String param2) {
+    public static SokoHuruFragment getInstance(int position ) {
         SokoHuruFragment fragment = new SokoHuruFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, position);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -282,6 +275,10 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
         // Inflate the layout for this fragment
 
+        Bundle bundle = getArguments();
+        if(bundle !=null) {
+            Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
+        }
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
         txtPosition = (TextView) view.findViewById(R.id.position);
@@ -292,6 +289,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
         listSokoni.setHasFixedSize(true);
+
+
+     //   listSokoni.getAdapter().notifyDataSetChanged();
 
         // The number of Columns
         mLayoutManager = new GridLayoutManager(getActivity(), 2);
