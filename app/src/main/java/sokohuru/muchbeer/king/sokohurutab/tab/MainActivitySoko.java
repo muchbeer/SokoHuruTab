@@ -1,6 +1,8 @@
 package sokohuru.muchbeer.king.sokohurutab.tab;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -56,7 +58,8 @@ import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.K
 import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_SOKO;
 import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_TITLE;
 
-public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener{
+public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.ClickListener,
+        SearchView.OnQueryTextListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -133,6 +136,10 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         mTextError = (TextView) findViewById(R.id.textVolleyError);
         txtPosition = (TextView) findViewById(R.id.position);
         btnRefresh = (Button) findViewById(R.id.btnRefresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setColorSchemeColors(
+                Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
         //Swipe refresh
         //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
@@ -169,6 +176,14 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
                 btnRefresh.setVisibility(View.GONE);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+
 
     }
 
@@ -383,4 +398,24 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         return filteredModelList;
     }
 
+
+
+    SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
+
+        @Override
+        public void onRefresh() {
+            //textInfo.setText("WAIT: doing something");
+            sendJsonRequest();
+
+            //simulate doing something
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(false);
+                  //  textInfo.setText("DONE");
+                }
+
+            }, 4000);
+        }};
 }

@@ -31,6 +31,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.pushbots:pushbots-lib:2.0.13@aar'
+    compile "com.android.support:support-v13:21.0.2"
 
 
 }

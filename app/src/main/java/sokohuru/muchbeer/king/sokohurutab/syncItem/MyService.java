@@ -48,6 +48,7 @@ import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.K
 /**
  * Created by muchbeer on 6/24/2015.
  */
+//@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class MyService extends JobService {
 

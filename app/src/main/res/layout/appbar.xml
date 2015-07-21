@@ -9,9 +9,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/appbar"
     android:background="@color/primaryColor"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/MyCustomeToolBarTheme"
-    app:layout_scrollFlags="scroll|enterAlways" >
+   >
 
 </android.support.v7.widget.Toolbar>
 
