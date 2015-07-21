@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sokohuru.muchbeer.king.sokohurutab.MainActivity;
 import sokohuru.muchbeer.king.sokohurutab.R;
@@ -60,13 +61,14 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
         this.origPlanetList = listSokoni;
     }
 
-    public void animateTo(ArrayList<Soko> models) {
+    public void animateTo(List<Soko> models) {
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
+      //  setClickListener.
     }
 
-    private void applyAndAnimateRemovals(ArrayList<Soko> newModels) {
+    private void applyAndAnimateRemovals(List<Soko> newModels) {
         for (int i = slistSokoni.size() - 1; i >= 0; i--) {
             final Soko model = slistSokoni.get(i);
             if (!newModels.contains(model)) {
@@ -77,7 +79,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
 
 
-    private void applyAndAnimateAdditions(ArrayList<Soko> newModels) {
+    private void applyAndAnimateAdditions(List<Soko> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
             final Soko model = newModels.get(i);
             if (!slistSokoni.contains(model)) {
@@ -86,7 +88,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
         }
     }
 
-    private void applyAndAnimateMovedItems(ArrayList<Soko> newModels) {
+    private void applyAndAnimateMovedItems(List<Soko> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
             final Soko model = newModels.get(toPosition);
             final int fromPosition = slistSokoni.indexOf(model);

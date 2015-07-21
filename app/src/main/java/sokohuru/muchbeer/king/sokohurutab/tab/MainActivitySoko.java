@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sokohuru.muchbeer.king.sokohurutab.R;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
@@ -136,7 +138,7 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         }
         mTextError = (TextView) findViewById(R.id.textVolleyError);
         txtPosition = (TextView) findViewById(R.id.position);
-        btnRefresh = (Button) findViewById(R.id.btnRefresh);
+      //  btnRefresh = (Button) findViewById(R.id.btnRefresh);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
         swipeRefreshLayout.setColorSchemeColors(
@@ -167,6 +169,7 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         adapterSoko = new AdapterSoko(getApplicationContext());
         adapterSoko.setClickListener(this);
         listSokoni.setAdapter(adapterSoko);
+        //listSokoni.setItemAnimator(new SlideInOutTopItemAnimator(mRecyclerView));
         // listSearch = adapterSoko.setSokoList();
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
@@ -177,20 +180,6 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
             //     adapterSoko.notifyDataSetChanged();
         }
 
-        if (adapterSoko.getItemCount() == 0) {
-                Toast.makeText(getApplicationContext(), "No data seems", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "We make it rain", Toast.LENGTH_LONG).show();
-
-        }
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendJsonRequest();
-                btnRefresh.setVisibility(View.GONE);
-            }
-        });
 
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 
@@ -337,6 +326,23 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
 
         final MenuItem item = menu.findItem(R.id.menu_search);
         searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+       searchView.setOnKeyListener(new View.OnKeyListener() {
+           @Override
+           public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+               if(keyEvent.getAction()==KeyEvent.ACTION_DOWN) {
+                   switch (keyCode) {
+                       case  KeyEvent.KEYCODE_DPAD_CENTER:
+                       case KeyEvent.KEYCODE_ENTER:
+                           return true;
+                       default:
+                           break;
+                   }
+               }
+               return false;
+           }
+       });
         searchView.setOnQueryTextListener(this);
 
 
@@ -390,9 +396,10 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
 
 
         adapterSoko.setSokoList(listMovies);
-        final ArrayList<Soko> filteredModelList = filter(listMovies,   query);
+        final List<Soko> filteredModelList = filter(listMovies,   query);
         adapterSoko.animateTo(filteredModelList);
-        listSokoni.scrollToPosition(positionSearch);
+
+       // listSokoni.scrollToPosition(positionSearch);
 
         //searchView.clearFocus();
         //  this.notifyDataSentChanged();
@@ -400,10 +407,10 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
       //  return false;
     }
 
-    private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
+    private List<Soko> filter(List<Soko> models, String query) {
         query = query.toLowerCase();
 
-        final ArrayList<Soko> filteredModelList = new ArrayList<>();
+        final List<Soko> filteredModelList = new ArrayList<>();
         for (Soko model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
@@ -420,6 +427,7 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         @Override
         public void onRefresh() {
             //textInfo.setText("WAIT: doing something");
+            mTextError.setVisibility(View.GONE);
             sendJsonRequest();
 
             //simulate doing something

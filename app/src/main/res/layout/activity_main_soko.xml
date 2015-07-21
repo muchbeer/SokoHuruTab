@@ -26,15 +26,7 @@
         android:id="@+id/position"
         android:visibility="gone"/>
 
-    <Button
-        android:paddingTop="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRefresh"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#009688"
-        android:visibility="gone"/>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
