@@ -4,8 +4,10 @@ package sokohuru.muchbeer.king.sokohurutab;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -17,6 +19,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +32,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +113,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private Button btnRefresh;
     private SearchView searchView;
     private int positionSearch;
+    private ProgressBar circularProgress;
 
 
     // TODO: Rename and change types and number of parameters
@@ -169,7 +176,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     //    L.t(getActivity(),error.toString());
                         //if any error occurs in the network operations, show the TextView that contains the error message
                         mTextError.setVisibility(View.VISIBLE);
-                        btnRefresh.setVisibility(View.VISIBLE);
+                    //    btnRefresh.setVisibility(View.VISIBLE);
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             mTextError.setText(R.string.error_timeout);
 
@@ -277,6 +284,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
         // Inflate the layout for this fragment
 
+
+
         Bundle bundle = getArguments();
         if(bundle !=null) {
             Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
@@ -284,8 +293,15 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
         txtPosition = (TextView) view.findViewById(R.id.position);
-        btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
-        
+     //   btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        circularProgress = (ProgressBar) view.findViewById(R.id.progressBar);
+
+
+        swipeRefreshLayout.setColorSchemeColors(
+                Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+
+
         //Swipe refresh 
   //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
 
@@ -296,10 +312,12 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
      //   listSokoni.getAdapter().notifyDataSetChanged();
 
-        // The number of Columns
-        mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        listSokoni.setLayoutManager(mLayoutManager);
-      //  listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // First param is number of columns and second param is orientation i.e Vertical or Horizontal
+        StaggeredGridLayoutManager gridLayoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+// Attach the layout manager to the recycler view
+        listSokoni.setLayoutManager(gridLayoutManager);
+ // listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getActivity());
         adapterSoko.setClickListener(this);
@@ -314,14 +332,31 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
        //     adapterSoko.notifyDataSetChanged();
         }
 
-btnRefresh.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        sendJsonRequest();
-        btnRefresh.setVisibility(View.GONE);
-    }
-});
-setHasOptionsMenu(true);
+        if    (adapterSoko.getItemCount() == 0) {
+
+            circularProgress.setVisibility(View.VISIBLE);
+
+            //simulate doing something
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    //    swipeRefreshLayout.setRefreshing(false);
+                    circularProgress.setVisibility(View.GONE);
+                }
+
+            }, 14000);
+
+
+        } else {
+
+            circularProgress.setVisibility(View.GONE);
+        }
+
+
+        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
+
+        /**
         // TextFilter
    //     listSokoni.setTextFilterEnabled(true);
       //  swipeRefreshLayout.setOnRefreshListener(this);
@@ -330,6 +365,7 @@ setHasOptionsMenu(true);
          * Showing Swipe Refresh animation on activity create
          * As animation won't start on onCreate, post runnable is used
          */
+        setHasOptionsMenu(true);
 
         return view;
 
@@ -339,11 +375,28 @@ setHasOptionsMenu(true);
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+     //   super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
 
         final MenuItem item = menu.findItem(R.id.menu_search);
        searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        searchView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if(keyEvent.getAction()==KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case  KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
          searchView.setOnQueryTextListener(this);
 
 
@@ -402,5 +455,23 @@ setHasOptionsMenu(true);
         return filteredModelList;
     }
 
+    SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
 
+        @Override
+        public void onRefresh() {
+            //textInfo.setText("WAIT: doing something");
+            mTextError.setVisibility(View.GONE);
+            sendJsonRequest();
+
+            //simulate doing something
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(false);
+                    //  textInfo.setText("DONE");
+                }
+
+            }, 4000);
+        }};
 }

@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".tab.MainActivitySoko"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,7 +92,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".tab.MainActivitySoko"
             android:label="@string/title_activity_main_activity_soko" >
         </activity>
     </application>

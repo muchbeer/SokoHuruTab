@@ -1,9 +1,11 @@
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_refresh_layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+
     <TextView
         android:id="@+id/textVolleyError"
         android:layout_width="match_parent"
@@ -12,7 +14,7 @@
         android:padding="@dimen/size_word"
         android:textColor="#FF4444"
         android:text="my name is error"
-       android:visibility="gone"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -20,27 +22,36 @@
         android:id="@+id/position"
         android:visibility="gone"/>
 
-    <Button
-        android:paddingTop="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRefresh"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#009688"
-                android:visibility="gone"/>
-
-
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listSokoni"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:indeterminateDrawable="@drawable/circular_progress_bar"
+        android:background="@drawable/circle_shape"
         />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtError"
+
+        >
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/listSokoni"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <!-- TODO: Update blank fragment layout -->
 
 
-</LinearLayout>
+
+
+</RelativeLayout>
 
