@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,9 +103,10 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
     private TextView txtPosition;
     private String result;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Button btnRefresh;
+   // private Button btnRefresh;
     private SearchView searchView;
     private int positionSearch;
+    private ProgressBar circularProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +142,8 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
         txtPosition = (TextView) findViewById(R.id.position);
       //  btnRefresh = (Button) findViewById(R.id.btnRefresh);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        circularProgress = (ProgressBar) findViewById(R.id.progressBar);
+
 
         swipeRefreshLayout.setColorSchemeColors(
                 Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
@@ -180,6 +184,27 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
             //     adapterSoko.notifyDataSetChanged();
         }
 
+    if    (adapterSoko.getItemCount() == 0) {
+
+        circularProgress.setVisibility(View.VISIBLE);
+
+        //simulate doing something
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                //    swipeRefreshLayout.setRefreshing(false);
+                circularProgress.setVisibility(View.GONE);
+            }
+
+        }, 14000);
+
+
+        } else {
+
+        circularProgress.setVisibility(View.GONE);
+    }
+
 
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 
@@ -214,7 +239,7 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
                         //    L.t(getActivity(),error.toString());
                         //if any error occurs in the network operations, show the TextView that contains the error message
                         mTextError.setVisibility(View.VISIBLE);
-                        btnRefresh.setVisibility(View.VISIBLE);
+//                        btnRefresh.setVisibility(View.VISIBLE);
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             mTextError.setText(R.string.error_timeout);
 
