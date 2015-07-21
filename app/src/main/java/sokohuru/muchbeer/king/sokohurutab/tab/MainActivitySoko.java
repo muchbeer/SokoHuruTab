@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -151,9 +152,16 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
 
         //   listSokoni.getAdapter().notifyDataSetChanged();
 
+        // First param is number of columns and second param is orientation i.e Vertical or Horizontal
+        StaggeredGridLayoutManager gridLayoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+// Attach the layout manager to the recycler view
+        listSokoni.setLayoutManager(gridLayoutManager);
+
+
         // The number of Columns
-        mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        listSokoni.setLayoutManager(mLayoutManager);
+      //  mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+       // listSokoni.setLayoutManager(mLayoutManager);
         //  listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getApplicationContext());
@@ -169,6 +177,13 @@ public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.C
             //     adapterSoko.notifyDataSetChanged();
         }
 
+        if (adapterSoko.getItemCount() == 0) {
+                Toast.makeText(getApplicationContext(), "No data seems", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "We make it rain", Toast.LENGTH_LONG).show();
+
+        }
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

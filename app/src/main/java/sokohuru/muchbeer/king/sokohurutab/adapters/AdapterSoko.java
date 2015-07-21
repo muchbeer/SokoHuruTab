@@ -157,6 +157,7 @@ public void setClickListener(ClickListener clickListener) {
 
     @Override
     public int getItemCount() {
+
         return slistSokoni.size();
     }
 
