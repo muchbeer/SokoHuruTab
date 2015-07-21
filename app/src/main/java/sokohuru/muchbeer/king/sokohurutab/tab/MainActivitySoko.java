@@ -1,32 +1,19 @@
-package sokohuru.muchbeer.king.sokohurutab;
+package sokohuru.muchbeer.king.sokohurutab.tab;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,28 +30,33 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.pushbots.push.Pushbots;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.text.ParseException;
 import java.util.ArrayList;
 
+import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
 import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
 import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
 import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
-import sokohuru.muchbeer.king.sokohurutab.extras.Keys;
 import sokohuru.muchbeer.king.sokohurutab.loggin.L;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 
-import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*;
+import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_GENRE;
+import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_IMAGE;
+import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_RATING;
+import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_SOKO;
+import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.KEY_TITLE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener {
+public class MainActivitySoko extends ActionBarActivity implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,7 +84,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     //Searchable
 
-   // private SearchView mSearchView;
+    // private SearchView mSearchView;
 
 
 
@@ -108,47 +100,81 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private SearchView searchView;
     private int positionSearch;
 
-
-    // TODO: Rename and change types and number of parameters
-    public static SokoHuruFragment getInstance(int position ) {
-        SokoHuruFragment fragment = new SokoHuruFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, position);
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(STATE_SOKO, listMovies);
-    }
-
-    public SokoHuruFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
+        setContentView(R.layout.activity_main_soko);
 
         volleySingleton = VolleySingleton.getsInstance();
         requestQueue = volleySingleton.getRequestQueue();
 
-        // sendJsonRequest();
+        //Monitoring
+        Pushbots.sharedInstance().init(this);
 
+        try
+        {
+            Tracker t = ((MyApplication) getApplication()).getTracker(
+                    MyApplication.TrackerName.APP_TRACKER);
+
+            t.setScreenName("MainPage");
+
+            t.send(new HitBuilders.AppViewBuilder().build());
+        }
+        catch(Exception  e)
+        {
+            Toast.makeText(getApplicationContext(), "Error" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+        }
+        mTextError = (TextView) findViewById(R.id.textVolleyError);
+        txtPosition = (TextView) findViewById(R.id.position);
+        btnRefresh = (Button) findViewById(R.id.btnRefresh);
+
+        //Swipe refresh
+        //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+
+
+        listSokoni = (RecyclerView) findViewById(R.id.listSokoni);
+      listSokoni.setHasFixedSize(true);
+
+
+        //   listSokoni.getAdapter().notifyDataSetChanged();
+
+        // The number of Columns
+        mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        listSokoni.setLayoutManager(mLayoutManager);
+        //  listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        adapterSoko = new AdapterSoko(getApplicationContext());
+        adapterSoko.setClickListener(this);
+        listSokoni.setAdapter(adapterSoko);
+        // listSearch = adapterSoko.setSokoList();
+        if(savedInstanceState !=null) {
+            listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
+            adapterSoko.setSokoList(listMovies);
+        }
+        else {
+            sendJsonRequest();
+            //     adapterSoko.notifyDataSetChanged();
+        }
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendJsonRequest();
+                btnRefresh.setVisibility(View.GONE);
+            }
+        });
 
     }
 
     public void sendJsonRequest() {
         // showing refresh animation before making http call
-       // swipeRefreshLayout.setRefreshing(true);
+        // swipeRefreshLayout.setRefreshing(true);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_SOKO,
                 null,
@@ -166,7 +192,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("Error: ", error.getMessage());
-                    //    L.t(getActivity(),error.toString());
+                        //    L.t(getActivity(),error.toString());
                         //if any error occurs in the network operations, show the TextView that contains the error message
                         mTextError.setVisibility(View.VISIBLE);
                         btnRefresh.setVisibility(View.VISIBLE);
@@ -196,7 +222,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         ArrayList<Soko> listMovies = new ArrayList<>();
 
         if (response == null || response.length() == 0) {
-            L.t(getActivity(), "Refresh data");
+            L.t(getApplicationContext(), "Refresh data");
         }
         else   if (response != null && response.length() > 0) {
 
@@ -260,112 +286,67 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
                 // L.t(getActivity(), data.toString());
 
-          //      L.T(getActivity(), listMovies.toString());
+                //      L.T(getActivity(), listMovies.toString());
 
             } catch (JSONException e) {
-                L.t(getActivity(), e.toString());
+                L.t(getApplicationContext(), e.toString());
             }
 
         }
 
         return listMovies;
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
-        // Inflate the layout for this fragment
-
-        Bundle bundle = getArguments();
-        if(bundle !=null) {
-            Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
-        }
-
-        mTextError = (TextView) view.findViewById(R.id.textVolleyError);
-        txtPosition = (TextView) view.findViewById(R.id.position);
-        btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
-        
-        //Swipe refresh 
-  //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-
-
-        listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
-        listSokoni.setHasFixedSize(true);
-
-
-     //   listSokoni.getAdapter().notifyDataSetChanged();
-
-        // The number of Columns
-        mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        listSokoni.setLayoutManager(mLayoutManager);
-      //  listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        adapterSoko = new AdapterSoko(getActivity());
-        adapterSoko.setClickListener(this);
-        listSokoni.setAdapter(adapterSoko);
-      // listSearch = adapterSoko.setSokoList();
-        if(savedInstanceState !=null) {
-            listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
-            adapterSoko.setSokoList(listMovies);
-        }
-        else {
-            sendJsonRequest();
-       //     adapterSoko.notifyDataSetChanged();
-        }
-
-btnRefresh.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        sendJsonRequest();
-        btnRefresh.setVisibility(View.GONE);
-    }
-});
-setHasOptionsMenu(true);
-        // TextFilter
-   //     listSokoni.setTextFilterEnabled(true);
-      //  swipeRefreshLayout.setOnRefreshListener(this);
-
-        /**
-         * Showing Swipe Refresh animation on activity create
-         * As animation won't start on onCreate, post runnable is used
-         */
-
-        return view;
-
-
-    }
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
         final MenuItem item = menu.findItem(R.id.menu_search);
-       searchView = (SearchView) MenuItemCompat.getActionView(item);
-         searchView.setOnQueryTextListener(this);
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
 
 
-      item.setActionView(searchView);
-        //return true;
+        item.setActionView(searchView);
 
+        return true;
     }
 
 
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    //    startTab();
+
+
+        //Get an Analytics tracker to report app starts & uncaught exceptions etc.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        //  GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//Stop the analytics tracking
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     public void itemClicked(View view, int position) {
         // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
         // result = String.valueOf(position);
-        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
-       // positionSearch = getActivity().position;
+        Intent startIntent = new Intent(getApplicationContext(), MainActivityDetail.class);
+        // positionSearch = getActivity().position;
         startIntent.putExtra(TAG_POSITION, position);
-    //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+        //    startIntent.putExtra(TAG_POSITION2, positionSearch);
         startActivityForResult(startIntent, SHARING_CODE);
-
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -374,8 +355,7 @@ setHasOptionsMenu(true);
 
     @Override
     public boolean onQueryTextChange(String query) {
-
-        Intent myIntent = getActivity().getIntent(); // gets the previously created intent
+        Intent myIntent = getIntent(); // gets the previously created intent
         positionSearch = myIntent.getIntExtra(TAG_POSITION, -1);
 
 
@@ -385,8 +365,9 @@ setHasOptionsMenu(true);
         listSokoni.scrollToPosition(positionSearch);
 
         //searchView.clearFocus();
-      //  this.notifyDataSentChanged();
+        //  this.notifyDataSentChanged();
         return true;
+      //  return false;
     }
 
     private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
@@ -401,6 +382,5 @@ setHasOptionsMenu(true);
         }
         return filteredModelList;
     }
-
 
 }

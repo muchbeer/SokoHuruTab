@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import sokohuru.muchbeer.king.sokohurutab.LoginFragment;
 import sokohuru.muchbeer.king.sokohurutab.SokoHuruFragment;
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.WelcomeFragment;
 
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -35,14 +36,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
            // sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment tab1 = new sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment();
 
 
-            SokoHuruFragment tab1 = new SokoHuruFragment();
+            WelcomeFragment tab1 = new WelcomeFragment();
 
             return tab1;
                 }
+
+        else if(position ==1) {
+            SokoHuruFragment tab2 = new SokoHuruFragment();
+
+            return tab2;
+        }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            LoginFragment tab2 = new LoginFragment();
-            return tab2;
+            LoginFragment tab3 = new LoginFragment();
+            return tab3;
 
         }
 

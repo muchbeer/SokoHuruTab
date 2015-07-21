@@ -43,5 +43,7 @@
     <string name="title_activity_animate_toolbar">Animate Toolbar</string>
     <string name="title_activity_tab_animation">Tabs Animation</string>
     <string name="title_activity_sticky_view">StickyViewActivity</string>
+    <string name="title_activity_main_activity_soko">MainActivitySoko</string>
+    <string name="title_activity_main_activity2">MainActivity2Activity</string>
 
 </resources>

@@ -4,6 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+
+        android:paddingTop="@dimen/app_bar_top_padding"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
+        android:background="@color/primaryColor"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/MyCustomeToolBarTheme"
+        app:layout_scrollFlags="scroll|enterAlways" >
+
+    </android.support.v7.widget.Toolbar>
+
     <TextView
         android:id="@+id/textVolleyError"
         android:layout_width="match_parent"
@@ -12,7 +26,7 @@
         android:padding="@dimen/size_word"
         android:textColor="#FF4444"
         android:text="my name is error"
-       android:visibility="gone"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +42,7 @@
         android:id="@+id/btnRefresh"
         style="?android:attr/borderlessButtonStyle"
         android:textColor="#009688"
-                android:visibility="gone"/>
+        android:visibility="gone"/>
 
 
     <!-- TODO: Update blank fragment layout -->

@@ -238,22 +238,11 @@ public class FragmentClick  extends Fragment {
         loadImageView = (NetworkImageView) rootView.findViewById(R.id.image);
 
         //Getting item details from Intent
-        Intent collectDataIntent = getActivity().getIntent();
-      //  position =
-     //   collectDataIntent.getStringExtra(TAG_POSITION);
+             Intent collectDataIntent = getActivity().getIntent();
+        position = collectDataIntent.getIntExtra(TAG_POSITION, -1);
 
-       position = collectDataIntent.getIntExtra(TAG_POSITION, -1);
-
-      //  txtName.setText(position);
-      //  Toast.makeText(getActivity(), "The new position is: " + position, Toast.LENGTH_LONG).show();
-
-        sendJsonRequest(position);
-
-        //Searching option
-     //   setHasOptionsMenu(true);
-
-
-        return rootView;
+          sendJsonRequest(position);
+       return rootView;
     }
 
 private void getPageTitile(String title) {
