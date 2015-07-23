@@ -144,7 +144,6 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
 
 
         listSokoni.setAdapter(adapterSoko);
-        listSokoni.getLayoutManager().smoothScrollToPosition(listSokoni, null, adapterSoko.getItemCount() - 1);
 
         // listSearch = adapterSoko.setSokoList();
         if(savedInstanceState !=null) {
@@ -382,11 +381,19 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
 
     @Override
     public boolean onQueryTextChange(String query) {
-        adapterSoko.setSokoList(listMovies);
-        final ArrayList<Soko> filteredModelList = filter(listMovies, query);
-        adapterSoko.animateTo(filteredModelList);
-    //    listSokoni.scrollToPosition(adapterSoko.getItemCount() - 1);
 
+        if (query.length() > 2 ) {
+            //      listMovies.clear();
+
+            adapterSoko.setSokoList(listMovies);
+            final ArrayList<Soko> filteredModelList = filter(listMovies, query);
+            adapterSoko.animateTo(filteredModelList);
+            listSokoni.scrollToPosition(0);
+
+        }
+        else {
+            sendJsonRequest();
+        }
 
         //searchView.clearFocus();
         //  this.notifyDataSentChanged();
@@ -396,18 +403,24 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
         query = query.toLowerCase();
 
         final ArrayList<Soko> filteredModelList = new ArrayList<>();
-        if (query.length() > 2 ) {
-            for (Soko model : models) {
-                final String text = model.getTitle().toLowerCase();
-                if( text.contains(query)) {
-                    filteredModelList.add(model);
+     //   if (query.length() > 2 ) {
+      //      listMovies.clear();
 
+            for (int i=0; i < models.size(); i++) {
+                final String text = models.get(i).getTitle().toLowerCase();
+
+                if (text.contains(query.toLowerCase())) {
+                    filteredModelList.add(models.get(i));
                 }
             }
-        }
+
+
+
+        /**
      else {
             sendJsonRequest();
         }
+         **/
         return filteredModelList;
     }
     SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
