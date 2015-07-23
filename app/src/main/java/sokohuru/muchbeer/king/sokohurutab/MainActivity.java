@@ -73,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
 
         //Searchable
         //handleIntent(getIntent());
+        startTab();
     }
 
     private void startTab() {
@@ -103,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        startTab();
+
 
 
         //Get an Analytics tracker to report app starts & uncaught exceptions etc.

@@ -114,6 +114,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private SearchView searchView;
     private int positionSearch;
     private ProgressBar circularProgress;
+    private TextView txtswipeRefresh;
 
 
     // TODO: Rename and change types and number of parameters
@@ -296,6 +297,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
      //   btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         circularProgress = (ProgressBar) view.findViewById(R.id.progressBar);
+        txtswipeRefresh = (TextView) view.findViewById(R.id.infoText);
 
 
         swipeRefreshLayout.setColorSchemeColors(
@@ -390,6 +392,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                         case  KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
                             return true;
+                        case KeyEvent.KEYCODE_DEL:
+
+                            return true;
                         default:
                             break;
                     }
@@ -433,9 +438,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
 
         adapterSoko.setSokoList(listMovies);
-        final ArrayList<Soko> filteredModelList = filter(listMovies,   query);
+        final ArrayList<Soko> filteredModelList = filter(listMovies, query);
         adapterSoko.animateTo(filteredModelList);
-        listSokoni.scrollToPosition(positionSearch);
+        listSokoni.scrollToPosition(0);
 
         //searchView.clearFocus();
       //  this.notifyDataSentChanged();

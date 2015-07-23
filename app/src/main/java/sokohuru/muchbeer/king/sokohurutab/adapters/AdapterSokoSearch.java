@@ -1,16 +1,13 @@
 package sokohuru.muchbeer.king.sokohurutab.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -18,41 +15,47 @@ import com.android.volley.toolbox.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import sokohuru.muchbeer.king.sokohurutab.MainActivity;
 import sokohuru.muchbeer.king.sokohurutab.R;
-import sokohuru.muchbeer.king.sokohurutab.SokoHuruFragment;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
-import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
-import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
 
 /**
- * Created by muchbeer on 6/19/2015.
+ * Created by muchbeer on 7/23/2015.
  */
-public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> {
+public class AdapterSokoSearch extends RecyclerView.Adapter<AdapterSokoSearch.ViewHolderSokoni> {
 
 
     private final LayoutInflater layoutInflater;
-    private final VolleySingleton volleySingleTon;
-    private final ImageLoader imageLoader;
+    private VolleySingleton volleySingleTon;
+    private  ImageLoader imageLoader;
     private int SHARE_CODE = 1;
 
     private Filter planetFilter;
 
     private ArrayList<Soko> planetList;
     private ArrayList<Soko> origPlanetList = new ArrayList<>();
-    private ArrayList<Soko> slistSokoni = new ArrayList<>();
+    private List<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
 
 
-    public AdapterSoko(Context context) {
+    public AdapterSokoSearch(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         volleySingleTon = VolleySingleton.getsInstance();
         imageLoader = volleySingleTon.getImageLoader();
 
-       // L.t(context, "message");
+        // L.t(context, "message");
+    }
+
+
+    public AdapterSokoSearch(Context context,    ArrayList<Soko> models) {
+      //  this.context = context;
+        layoutInflater = LayoutInflater.from(context);
+        slistSokoni = new ArrayList<>(models);
+     //  volleySingleTon = VolleySingleton.getsInstance();
+    //   imageLoader = volleySingleTon.getImageLoader();
+
     }
 
     public void setSokoList(ArrayList<Soko> listSokoni) {
@@ -65,7 +68,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
-      //  setClickListener.
+        //  setClickListener.
     }
 
     private void applyAndAnimateRemovals(List<Soko> newModels) {
@@ -124,7 +127,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     }
 
     @Override
-    public AdapterSoko.ViewHolderSokoni onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderSokoni onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view =  layoutInflater.inflate(R.layout.fragment_soko_lookfeel, parent, false);
         ViewHolderSokoni viewHolderSokoni = new ViewHolderSokoni(view);
@@ -159,11 +162,11 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
 
 
-  }
+    }
 
-public void setClickListener(ClickListener clickListener) {
-    this.clickListener = clickListener;
-}
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     @Override
     public int getItemCount() {
@@ -172,18 +175,18 @@ public void setClickListener(ClickListener clickListener) {
     }
 
 
-        public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-       private static final int SHARING_CODE = 1;
-       public ImageView sokoThumbnail;
+        private static final int SHARING_CODE = 1;
+        public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
-     //  private ClickListener clickListener;
+        //  private ClickListener clickListener;
 
 
-       public ViewHolderSokoni(View itemView) {
+        public ViewHolderSokoni(View itemView) {
             super(itemView);
-                
+
             sokoThumbnail = (ImageView) itemView.findViewById(R.id.sokoThumbnail);
             sokoTitle = (TextView) itemView.findViewById(R.id.sokoTitle);
             sokoGenre = (TextView) itemView.findViewById(R.id.sokoRating);
@@ -195,23 +198,23 @@ public void setClickListener(ClickListener clickListener) {
         }
 
 
-       @Override
-       public void onClick(View view) {
-         //  Intent startIntent = new Intent(context, MainActivityDetail.class);
+        @Override
+        public void onClick(View view) {
+            //  Intent startIntent = new Intent(context, MainActivityDetail.class);
 
-         //  ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
+            //  ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
 
             if(clickListener!=null) {
                 clickListener.itemClicked(view, getPosition());
 
             }
-       }
+        }
 
 
-   }
-public interface ClickListener{
+    }
+    public interface ClickListener{
 
-    public void itemClicked(View view, int position);
-}
+        public void itemClicked(View view, int position);
+    }
 
 }
