@@ -17,6 +17,7 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import sokohuru.muchbeer.king.sokohurutab.MainActivity;
 import sokohuru.muchbeer.king.sokohurutab.R;
@@ -40,7 +41,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private Filter planetFilter;
 
     private ArrayList<Soko> planetList;
-    private ArrayList<Soko> origPlanetList = new ArrayList<>();
+    public ArrayList<Soko> origPlanetList = new ArrayList<>();
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
@@ -213,5 +214,27 @@ public interface ClickListener{
 
     public void itemClicked(View view, int position);
 }
+
+
+    public ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
+       // query = query.toLowerCase();
+
+        query = query.toLowerCase(Locale.getDefault());
+        slistSokoni.clear();
+        ArrayList<Soko> filteredModelList = new ArrayList<>();
+     //    ArrayList<Soko> filteredModelList = new ArrayList<>();
+        if (query.length() == 0) {
+            slistSokoni.addAll(models);
+        } else {
+            for (Soko model : models) {
+                if (model.getTitle().toLowerCase(Locale.getDefault()).contains(query)) {
+                    filteredModelList.add(model);
+                }
+            }
+        }
+        notifyDataSetChanged();
+
+        return filteredModelList;
+    }
 
 }

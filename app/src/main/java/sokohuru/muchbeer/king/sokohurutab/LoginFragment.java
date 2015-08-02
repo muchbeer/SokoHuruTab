@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -146,6 +147,7 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
         listSokoni.setAdapter(adapterSoko);
 
         // listSearch = adapterSoko.setSokoList();
+
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
             adapterSoko.setSokoList(listMovies);
@@ -155,6 +157,7 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
             //     adapterSoko.notifyDataSetChanged();
         }
 
+        /**
         if    (adapterSoko.getItemCount() == 0) {
 
             circularProgress.setVisibility(View.VISIBLE);
@@ -175,7 +178,7 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
 
             circularProgress.setVisibility(View.GONE);
         }
-
+**/
 
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 
@@ -204,15 +207,7 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
         requestQueue = volleySingleton.getRequestQueue();
     }
 
-    @Override
-    public void itemClicked(View view, int position) {
 
-        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
-        // positionSearch = getActivity().position;
-        startIntent.putExtra(TAG_POSITION, position);
-        //    startIntent.putExtra(TAG_POSITION2, positionSearch);
-        startActivityForResult(startIntent, SHARING_CODE);
-    }
 
     public void sendJsonRequest() {
         // showing refresh animation before making http call
@@ -370,6 +365,7 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
         searchView.setOnQueryTextListener(this);
 
 
+
         item.setActionView(searchView);
         //return true;
     }
@@ -380,48 +376,41 @@ public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickL
     }
 
     @Override
+    public void itemClicked(View view, int position) {
+
+        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
+        // positionSearch = getActivity().position;
+        startIntent.putExtra(TAG_POSITION, position);
+        //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+        startActivityForResult(startIntent, SHARING_CODE);
+    }
+    @Override
     public boolean onQueryTextChange(String query) {
 
-        if (query.length() > 2 ) {
-            //      listMovies.clear();
+        // TODO Auto-generated method stub
 
-            adapterSoko.setSokoList(listMovies);
-            final ArrayList<Soko> filteredModelList = filter(listMovies, query);
-            adapterSoko.animateTo(filteredModelList);
-            listSokoni.scrollToPosition(0);
+        adapterSoko.filter(query);
 
-        }
-        else {
-            sendJsonRequest();
-        }
-
-        //searchView.clearFocus();
-        //  this.notifyDataSentChanged();
+     //
         return true;    }
 
     private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
         query = query.toLowerCase();
 
-        final ArrayList<Soko> filteredModelList = new ArrayList<>();
-     //   if (query.length() > 2 ) {
+            //   final ArrayList<Soko> filteredModelList = new ArrayList<>();
+     //   if (query.length() > 2
+     // ) {
       //      listMovies.clear();
-
-            for (int i=0; i < models.size(); i++) {
-                final String text = models.get(i).getTitle().toLowerCase();
-
-                if (text.contains(query.toLowerCase())) {
-                    filteredModelList.add(models.get(i));
-                }
+        final ArrayList<Soko> filteredModelList = new ArrayList<>();
+        for (int i = 0; i< models.size(); i++) {
+            final String text = models.get(i).getTitle().toLowerCase();
+            if (text.contains(query.toLowerCase())) {
+                filteredModelList.add(models.get(i));
             }
-
-
-
-        /**
-     else {
-            sendJsonRequest();
         }
-         **/
         return filteredModelList;
+
+
     }
     SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
 
