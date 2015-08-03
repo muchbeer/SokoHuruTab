@@ -11,6 +11,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,7 +33,7 @@ import sokohuru.muchbeer.king.sokohurutab.R;
 
 import static sokohuru.muchbeer.king.sokohurutab.search.FragmentThree.*;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -56,11 +57,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity_main);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
 
