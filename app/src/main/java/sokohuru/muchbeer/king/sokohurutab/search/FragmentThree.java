@@ -33,7 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import sokohuru.muchbeer.king.sokohurutab.R;
+import sokohuru.muchbeer.king.sokohurutab.*;
+import sokohuru.muchbeer.king.sokohurutab.MainActivity;
 import sokohuru.muchbeer.king.sokohurutab.connectdata.AppConfig;
 import sokohuru.muchbeer.king.sokohurutab.connectdata.AppController;
 import sokohuru.muchbeer.king.sokohurutab.connectdata.SessionManager;
@@ -69,6 +70,7 @@ public class FragmentThree extends Fragment {
  //   private static final String TAG = "Tell error";
 
     private static final String TAG = FragmentThree.class.getSimpleName();
+    MainActivity actionIntent = new MainActivity();
     private TextView txtDesc, txtLocation;
     final static String ARG_STRING = "name";
     private String putName;
@@ -83,10 +85,8 @@ public class FragmentThree extends Fragment {
 
 
     //Getting username from Google
-    SharedPreferences preferences;
     private String SHARED_KEY = "Name";
     String username;
-    TextView userName;
 
 
     @Override
@@ -117,17 +117,17 @@ public class FragmentThree extends Fragment {
 
         // Check if user is already logged in or not
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        username = preferences.getString(SHARED_KEY, "");
-        if(!username.equalsIgnoreCase(""))
-        {
-            username = "Welcome: " + username;  /* Edit the value here*/
-        }
+      //  preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+       // username = preferences.getString(SHARED_KEY, "");
+      //  if(!username.equalsIgnoreCase(""))
+     //   {
+      //      username = "Welcome: " + username;  /* Edit the value here*/
+     //   }
 
 
         Button btnSubmit = (Button) view.findViewById(R.id.sendInformation);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+    btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -141,7 +141,10 @@ public class FragmentThree extends Fragment {
                 price = edtPrice.getText().toString();
                 contact =edtContact.getText().toString();
 
-                  image =    sharedpreferences.getString(KEY_LINK, "");            // getting Long
+                  image =    sharedpreferences.getString(KEY_LINK, "");
+               username = sharedpreferences.getString(SHARED_KEY, "");// getting Long
+               Toast.makeText(getActivity(), "Email yako ni: " + username , Toast.LENGTH_LONG).show();
+
                 //   pref.getString("key_name5", null);          // getting String
               //  txtName.setText(putName);
 
@@ -209,51 +212,13 @@ public class FragmentThree extends Fragment {
 
                 if(pointError.contains("Ongera")) {
                     Toast.makeText(getActivity(), "Umeweza asilimia zote", Toast.LENGTH_LONG).show();
+
+                    Intent getBackToMainActivity = new Intent(getActivity(), MainActivity.class);
+                    getActivity().startActivity(getBackToMainActivity);
                 } else {
                     Toast.makeText(getActivity(), "kuna tatizo " + pointError, Toast.LENGTH_LONG).show();
                 }
 
-
-             //   Toast.makeText(getActivity(),"Ongera umeweza kutangaza bidhaa yako:  " + pointError, Toast.LENGTH_LONG).show();
-
-                //Database staff
-                /**
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String price = user.getString("price");
-                        String image = user.getString("image");
-                        String contact = user.getString("contact");
-                        String place = user.getString("place");
-                        String desc = user.getString("desc");
-
-
-
-                        // Inserting row in users table
-                        db.addUser(name, price, image, contact, place, desc);
-
-
-                        getActivity().finish();
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getActivity(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                **/
             }
         }, new Response.ErrorListener() {
 

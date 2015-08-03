@@ -1,91 +1,110 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <RelativeLayout
+    android:layout_height="match_parent">
+    <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/container3"
-        tools:context="sokohuru.muchbeer.king.sokohurutab.search.FragmentThree">
+        android:paddingTop="14dp"
+        android:id="@+id/fragment_container2"
+        tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/places"
-            android:paddingTop="28dp">
-            <!-- Mahali ya bidhaa Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/edt_place"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Mahali ilipo Bidhaa"/>
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
+            android:id="@+id/txTitle"
+            android:padding="8dp"
+            android:textColor="@color/imageColor"
+            />
 
-        <LinearLayout
+        <!-- TODO: Update blank fragment layout -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/desc"
-            android:paddingTop="8dp"
-            android:layout_below="@+id/places"
-            android:orientation="vertical">
-            <!-- Description Label  gravity specify Cursor Position -->
-            <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            >
+
+            <EditText
+                android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/edt_desc"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="Maelezo kuhusu bidhaa"
-                    android:lines="2"
-                    android:scrollbars="vertical"
-                    android:gravity="top|left" />
-            </android.support.design.widget.TextInputLayout>
+                android:hint="Jina la bidhaa"
+                />
 
 
-        </LinearLayout>
 
+        </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/desc"
-            android:orientation="vertical"
-            android:id="@+id/hiddentext">
-
-
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp">
+            <EditText android:id="@+id/edt_price"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/name"
-                android:textColor="#E91E63"
-                android:textSize="14dp"/>
+                android:hint="Bei ya Bidhaa"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp">
+            <EditText android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Namba ya simu"
+                android:inputType="phone"
+                />
+        </android.support.design.widget.TextInputLayout>
 
-        <!-- Signup Button -->
+        <!-- Mahali ya bidhaa Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/edt_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mahali ilipo Bidhaa"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Description Label  gravity specify Cursor Position -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/edt_desc"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="Maelezo kuhusu bidhaa"
+                android:lines="2"
+                android:scrollbars="vertical"
+                android:gravity="top|left" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
         <Button
-            android:layout_below="@+id/hiddentext"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/btn_submit"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:layout_marginTop="20dp"
-            android:background="#E91E63"
-            android:text="Tanganza Bidhaa"/>
+            android:textColor="@android:color/white"
+            android:id="@+id/sendInformation"
+            android:text="Tanganza Bidhaa"
+            android:background="#009688"
+            />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

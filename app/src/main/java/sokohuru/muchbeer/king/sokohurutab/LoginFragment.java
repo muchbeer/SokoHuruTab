@@ -3,6 +3,7 @@ package sokohuru.muchbeer.king.sokohurutab;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -29,8 +30,10 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
+import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
 import sokohuru.muchbeer.king.sokohurutab.extras.AddNewItem;
 import sokohuru.muchbeer.king.sokohurutab.search.*;
+import sokohuru.muchbeer.king.sokohurutab.search.MainActivity;
 
 public class LoginFragment extends Fragment implements
         ConnectionCallbacks, OnConnectionFailedListener,
@@ -51,9 +54,12 @@ public class LoginFragment extends Fragment implements
     private Button mRevokeButton;
     private TextView mStatus;
 
+    public static final String MyPREFERENCES = "MyPrefs";
+ //   SharedPreferences sharedpreferences;
+
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    private String SHARED_KEY = "Name";
+      private String SHARED_KEY = "Name";
 
 
     @Nullable
@@ -76,7 +82,6 @@ public class LoginFragment extends Fragment implements
         mGoogleApiClient = buildGoogleApiClient();
 
         //Save value
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return view;
     }
 
@@ -95,7 +100,8 @@ public class LoginFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+       // mGoogleApiClient.connect();
+
     }
 
     @Override
@@ -114,18 +120,20 @@ public class LoginFragment extends Fragment implements
 
 
         //set the shared preferences
-        editor = preferences.edit();
-
         // Indicate that the sign in process is complete.
         mSignInProgress = SIGNED_IN;
 
         try {
             String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-            editor.putString(SHARED_KEY, emailAddress);
-            editor.apply();
+          preferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            editor = preferences.edit();
+           editor.putString(SHARED_KEY, emailAddress);
+
+            // Save the changes in SharedPreferences
+            editor.commit(); // commit changes
             //mStatus.setText(String.format("Signed In to My App as %s", emailAddress));
-            Toast.makeText(getActivity(),"Signed as: " + emailAddress, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Umejisajiri kama: " + emailAddress, Toast.LENGTH_LONG).show();
 
 
             Intent connectsuccessful = new Intent(getActivity(), sokohuru.muchbeer.king.sokohurutab.search.MainActivity.class);
@@ -152,7 +160,9 @@ public class LoginFragment extends Fragment implements
             switch (view.getId()) {
                 case R.id.sign_in_button:
                     mStatus.setVisibility(View.VISIBLE);
-                    mStatus.setText("Signing In....");
+                    mStatus.setText("Subiri unajisajiri....");
+                    mGoogleApiClient.connect();
+                //    mGoogleApiClient.connect();
                     resolveSignInError();
                     break;
                 case R.id.sign_out_button:
@@ -190,7 +200,7 @@ public class LoginFragment extends Fragment implements
         mSignOutButton.setEnabled(false);
         mRevokeButton.setEnabled(false);
 
-        mStatus.setText("Signed out");
+      //  mStatus.setText("");
 
     }
 

@@ -7,6 +7,11 @@
     <dimen name="drawer_margin_top">24dp</dimen>
     <dimen name="detail_backdrop_height">256dp</dimen>
 
+     <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
 
     <dimen name="size_word">16dp</dimen>
     <dimen name="size_text_primary">16sp</dimen>

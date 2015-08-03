@@ -95,6 +95,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private RequestQueue requestQueue;
     public ArrayList<Soko> listMovies = new ArrayList<>();
 
+    public ArrayList<Soko> listFilterBest = new ArrayList<>();
+
+
     public RecyclerView listSokoni;
     private RecyclerView.LayoutManager sLayoutManager;
 
@@ -271,7 +274,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                         }
                     }
                     if(matchFound =="N") {
-                        listMovies.add(sokoni);
+                        listFilterBest.add(sokoni);
                     }
 
 
@@ -435,7 +438,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public void itemClicked2(View view, int positionSearch) {
-        Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  " + findPosition, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  " + positionSearch, Toast.LENGTH_LONG).show();
 
     }
 
@@ -467,7 +470,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
        // final ArrayList<Soko> filteredModelList = adapterSoko.filter(listMovies, query);
        // adapterSoko.filter( query);
 
-        final ArrayList<Soko> filteredModelList = filterBestSearch(listMovies, query);
+        final ArrayList<Soko> filteredModelList = filterBestSearch(listFilterBest, query);
         adapterSoko.animateTo(filteredModelList);
       //  adapterSoko.filter(listMovies, query);
      //   listSokoni.scrollToPosition(0);

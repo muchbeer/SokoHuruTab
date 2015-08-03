@@ -38,6 +38,8 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import sokohuru.muchbeer.king.sokohurutab.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,6 +84,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     public static final String KEY_LINK = "link";
     private TextView txtPercentage;
     private String imagewthooutNull;
+    private int srcWidth = 500;
+    private int dstWidth = 500;
 
     @Override
     public void onClick(View view) {
@@ -166,7 +170,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
-      View view = inflater.inflate(R.layout.fragment_one, container, false);
+      View view = inflater.inflate(R.layout.search_fragment_one, container, false);
         // Inflate the layout for this fragment
 
 //Shared me
@@ -216,7 +220,10 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         Uri selectedImageUri = data.getData();
         imagepath = getPath(selectedImageUri);
         BitmapFactory.Options options = new BitmapFactory.Options();
-       // options.inJustDecodeBounds = true;
+       options.inJustDecodeBounds = true;
+        options.inScaled= true;
+        options.inDensity = srcWidth;
+        options.inTargetDensity = dstWidth * options.inSampleSize;
         options.inSampleSize= 4;
         Bitmap bitmap= BitmapFactory.decodeFile(imagepath, options);
         imageview.setImageBitmap(bitmap);
@@ -242,8 +249,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
       
             super.onPreExecute();
 
-         dialog = new ProgressDialog(getActivity(),
-                 R.style.AppTheme_Dark_Dialog);
+         dialog = new ProgressDialog(getActivity());
           dialog.setMessage("Tafadhari subiri...");
            dialog.setCancelable(true);
            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

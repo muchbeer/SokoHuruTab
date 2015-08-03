@@ -35,8 +35,8 @@ public class MainActivity extends ActionBarActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Karibu","Sokoni","Login"};
-    int Numboftabs =3;
+    CharSequence Titles[]={"Sokoni","Uza Bidhaa"};
+    int Numboftabs =2;
 
 
     @Override

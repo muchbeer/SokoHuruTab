@@ -6,8 +6,8 @@
     </style>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accentColor</item>
     </style>
     <style name="MyCustomeToolBarTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -22,7 +22,7 @@
     <style name="Base.Theme.DesignDemo" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#673AB7</item>
         <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#FF4081</item>
+        <item name="colorAccent">@color/accentColor</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
