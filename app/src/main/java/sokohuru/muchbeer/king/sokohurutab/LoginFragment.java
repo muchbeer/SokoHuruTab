@@ -1,434 +1,230 @@
 package sokohuru.muchbeer.king.sokohurutab;
 
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.KeyEvent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import sokohuru.muchbeer.king.sokohurutab.extras.AddNewItem;
+import sokohuru.muchbeer.king.sokohurutab.search.*;
 
-import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSokoSearch;
-import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
-import sokohuru.muchbeer.king.sokohurutab.extras.Keys;
-import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*;
-
-import java.util.ArrayList;
-
-import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
-import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSokoSearch;
-import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
-import sokohuru.muchbeer.king.sokohurutab.loggin.L;
-import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
+public class LoginFragment extends Fragment implements
+        ConnectionCallbacks, OnConnectionFailedListener,
+        View.OnClickListener {
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class LoginFragment extends Fragment  implements AdapterSokoSearch.ClickListener, SearchView.OnQueryTextListener {
+    private static final int SIGNED_IN = 0;
+    private static final int STATE_SIGNING_IN = 1;
+    private static final int STATE_IN_PROGRESS = 2;
+    private static final int RC_SIGN_IN = 0;
 
-    private static final String ARG_PARAM1 = "position";
-    private static final String ARG_PARAM2 = "param2";
+    private GoogleApiClient mGoogleApiClient;
+    private int mSignInProgress;
+    private PendingIntent mSignInIntent;
 
-    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
-    private static final String STATE_SOKO = "State Sokoni";
-    private static final int SHARING_CODE = 1;
-    private static final String TAG_POSITION = "position";
-    private static final String TAG_POSITION2 = "position2";
+    private SignInButton mSignInButton;
+    private Button mSignOutButton;
+    private Button mRevokeButton;
+    private TextView mStatus;
 
-
-    RecyclerView.LayoutManager mLayoutManager;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private ImageLoader imageLoader;
-    private RequestQueue requestQueue;
-    public ArrayList<Soko> listMovies;
-    private RecyclerView.LayoutManager sLayoutManager;
-
-    private RecyclerView listSokoni;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private String SHARED_KEY = "Name";
 
 
-    private VolleySingleton volleySingleton;
-
-    private AdapterSokoSearch adapterSoko;
-    private TextView mTextError;
-    private TextView txtPosition;
-    private String result;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private Button btnRefresh;
-    private SearchView searchView;
-    private int positionSearch;
-    private ProgressBar circularProgress;
-    private TextView txtswipeRefresh;
-    private ArrayList<Soko> mModel;
-
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
-
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_login, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.activity_main_login, container, false);
+        // Get references to all of the UI views
+        mSignInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
+        mSignOutButton = (Button) view.findViewById(R.id.sign_out_button);
+        mRevokeButton = (Button) view.findViewById(R.id.revoke_access_button);
+        mStatus = (TextView) view.findViewById(R.id.statuslabel);
 
+        // Add click listeners for the buttons
+        mSignInButton.setOnClickListener(this);
+        mSignOutButton.setOnClickListener(this);
+        mRevokeButton.setOnClickListener(this);
 
-        listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
-        mTextError = (TextView) view.findViewById(R.id.textVolleyError);
-        txtPosition = (TextView) view.findViewById(R.id.position);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        circularProgress = (ProgressBar) view.findViewById(R.id.progressBar);
-        txtswipeRefresh = (TextView) view.findViewById(R.id.infoText);
+        // Build a GoogleApiClient
+        mGoogleApiClient = buildGoogleApiClient();
 
-
+        //Save value
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return view;
     }
 
+
+
+    private GoogleApiClient buildGoogleApiClient() {
+        return new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API, Plus.PlusOptions.builder().build())
+                .addScope(new Scope("email"))
+                .build();
+    }
+
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-         //   btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
-
-        swipeRefreshLayout.setColorSchemeColors(
-                Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
-   //  listSokoni.setHasFixedSize(true);
-
-      // First param is number of columns and second param is orientation i.e Vertical or Horizontal
-        StaggeredGridLayoutManager gridLayoutManager =
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-// Attach the layout manager to the recycler view
-        listSokoni.setLayoutManager(gridLayoutManager);
-        // listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        mModel = new ArrayList<>();
-        adapterSoko = new AdapterSokoSearch(getActivity());
-        adapterSoko.setClickListener(this);
-
-
-        listSokoni.setAdapter(adapterSoko);
-
-        // listSearch = adapterSoko.setSokoList();
-
-        if(savedInstanceState !=null) {
-            listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
-            adapterSoko.setSokoList(listMovies);
-        }
-        else {
-            sendJsonRequest();
-            //     adapterSoko.notifyDataSetChanged();
-        }
-
-        /**
-        if    (adapterSoko.getItemCount() == 0) {
-
-            circularProgress.setVisibility(View.VISIBLE);
-
-            //simulate doing something
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    //    swipeRefreshLayout.setRefreshing(false);
-                    circularProgress.setVisibility(View.GONE);
-                }
-
-            }, 14000);
-
-
-        } else {
-
-            circularProgress.setVisibility(View.GONE);
-        }
-**/
-
-        swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
-
-        /**
-         // TextFilter
-         //     listSokoni.setTextFilterEnabled(true);
-         //  swipeRefreshLayout.setOnRefreshListener(this);
-
-         /**
-         * Showing Swipe Refresh animation on activity create
-         * As animation won't start on onCreate, post runnable is used
-         */
-        setHasOptionsMenu(true);
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
-
-        volleySingleton = VolleySingleton.getsInstance();
-        requestQueue = volleySingleton.getRequestQueue();
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
 
+    @Override
+    public void onConnected(Bundle bundle) {
 
-    public void sendJsonRequest() {
-        // showing refresh animation before making http call
-        // swipeRefreshLayout.setRefreshing(true);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_SOKO,
-                null,
-                new Response.Listener<JSONObject>() {
+        mSignInButton.setEnabled(false);
+        mSignOutButton.setEnabled(true);
+        mRevokeButton.setEnabled(true);
 
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
-                        //  parseJSONResponse(jsonObject);
-                        // L.t(getActivity(), jsonObject.toString());
-                        listMovies = parseJSONResponse(jsonObject);
-                        adapterSoko.setSokoList(listMovies);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e("Error: ", error.getMessage());
-                        //    L.t(getActivity(),error.toString());
-                        //if any error occurs in the network operations, show the TextView that contains the error message
-                        mTextError.setVisibility(View.VISIBLE);
-                        //    btnRefresh.setVisibility(View.VISIBLE);
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            mTextError.setText(R.string.error_timeout);
 
-                        } else if (error instanceof AuthFailureError) {
-                            mTextError.setText(R.string.error_auth_failure);
-                            //TODO
-                        } else if (error instanceof ServerError) {
-                            mTextError.setText(R.string.error_auth_failure);
-                            //TODO
-                        } else if (error instanceof NetworkError) {
-                            mTextError.setText(R.string.error_network);
-                            //TODO
-                        } else if (error instanceof ParseError) {
-                            mTextError.setText(R.string.error_parser);
-                            //TODO
-                        }
-                    }
-                });
-        requestQueue.add(request);
+        //set the shared preferences
+        editor = preferences.edit();
+
+        // Indicate that the sign in process is complete.
+        mSignInProgress = SIGNED_IN;
+
+        try {
+            String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+            editor.putString(SHARED_KEY, emailAddress);
+            editor.apply();
+            //mStatus.setText(String.format("Signed In to My App as %s", emailAddress));
+            Toast.makeText(getActivity(),"Signed as: " + emailAddress, Toast.LENGTH_LONG).show();
+
+
+            Intent connectsuccessful = new Intent(getActivity(), sokohuru.muchbeer.king.sokohurutab.search.MainActivity.class);
+            startActivity(connectsuccessful);
+        }
+        catch(Exception ex){
+            String exception = ex.getLocalizedMessage();
+            String exceptionString = ex.toString();
+            // Note that you should log these errors in a ‘real’ app to aid in debugging
+        }
     }
 
+    @Override
+    public void onConnectionSuspended(int i) {
 
-    private ArrayList<Soko> parseJSONResponse(JSONObject response) {
-        ArrayList<Soko> listMovies = new ArrayList<>();
+        mGoogleApiClient.connect();
+    }
 
-        if (response == null || response.length() == 0) {
-            L.t(getActivity(), "Refresh data");
+    @Override
+    public void onClick(View view) {
+
+
+        if (!mGoogleApiClient.isConnecting()) {
+            switch (view.getId()) {
+                case R.id.sign_in_button:
+                    mStatus.setVisibility(View.VISIBLE);
+                    mStatus.setText("Signing In....");
+                    resolveSignInError();
+                    break;
+                case R.id.sign_out_button:
+                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                    mGoogleApiClient.disconnect();
+                    mGoogleApiClient.connect();
+                    break;
+                case R.id.revoke_access_button:
+                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                    Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
+                    mGoogleApiClient = buildGoogleApiClient();
+                    mGoogleApiClient.connect();
+                    break;
+            }
         }
-        else   if (response != null && response.length() > 0) {
+    }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
+        if (mSignInProgress != STATE_IN_PROGRESS) {
+            mSignInIntent = connectionResult.getResolution();
+            if (mSignInProgress == STATE_SIGNING_IN) {
+                resolveSignInError();
+            }
+        }
+        // Will implement shortly
+        onSignedOut();
+    }
 
+    private void onSignedOut() {
+
+        // Update the UI to reflect that the user is signed out.
+        mSignInButton.setEnabled(true);
+        mSignOutButton.setEnabled(false);
+        mRevokeButton.setEnabled(false);
+
+        mStatus.setText("Signed out");
+
+    }
+
+    private void resolveSignInError() {
+        if (mSignInIntent != null) {
             try {
+                mSignInProgress = STATE_IN_PROGRESS;
+                getActivity().startIntentSenderForResult(mSignInIntent.getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                mSignInProgress = STATE_SIGNING_IN;
+                mGoogleApiClient.connect();
+            }
+        } else {
+            // You have a play services error -- inform the user
+        }
+    }
 
-                StringBuilder data = new StringBuilder();
-                JSONArray arrayMoview = response.getJSONArray(KEY_SOKO);
-
-                for (int i = 0; i < arrayMoview.length(); i++) {
-
-                    String title = Constants.NA;
-                    String imaging = Constants.NA;
-
-                    String rating=Constants.NA;
-                    String genre=Constants.NA;
-                    JSONObject currentMarket = arrayMoview.getJSONObject(i);
-
-                    if(currentMarket.has(KEY_TITLE) && !currentMarket.isNull(KEY_TITLE)) {
-                        title = currentMarket.getString(KEY_TITLE);
-                    }
-
-                    if(currentMarket.has(KEY_IMAGE) && !currentMarket.isNull(KEY_IMAGE)) {
-
-                        imaging = currentMarket.getString(KEY_IMAGE);
-
-                    }// int releaseYear = currentMarket.getInt(KEY_YEAR);
-
-                    if(currentMarket.has(KEY_RATING) && !currentMarket.isNull(KEY_RATING)) {
-
-                        rating = currentMarket.getString(KEY_RATING);
-
-                    }
-                    if(currentMarket.has(KEY_GENRE) && !currentMarket.isNull(KEY_GENRE)) {
-
-                        genre = currentMarket.getString(KEY_GENRE);
-                    }
-
-                    data.append(title + "\n");
-
-                    Soko sokoni = new Soko();
-                    // sokoni.setId(id);
-                    sokoni.setTitle(title);
-                    sokoni.setImage(imaging);
-                    //   sokoni.setRating(rating);
-                    sokoni.setGenre(genre);
-                    //  sokoni.setReleaseYear(releaseYear);
-
-                  /*
-                   Release year has someKind of problem try observe that has you move forward
-                   sokoni.setReleaseYear(releaseYear);
-                    */
-
-                    if(!title.equals(Constants.NA)) {
-                        listMovies.add(sokoni);
-                    }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RC_SIGN_IN:
+                if (resultCode == Activity.RESULT_OK) {
+                    mSignInProgress = STATE_SIGNING_IN;
+                } else {
+                    mSignInProgress = SIGNED_IN;
                 }
 
-
-                // L.t(getActivity(), data.toString());
-
-                //      L.T(getActivity(), listMovies.toString());
-
-            } catch (JSONException e) {
-                L.t(getActivity(), e.toString());
-            }
-
+                if (!mGoogleApiClient.isConnecting()) {
+                    mGoogleApiClient.connect();
+                }
+                break;
         }
 
-        return listMovies;
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        inflater.inflate(R.menu.menu_main, menu);
-
-        final MenuItem item = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(item);
-
-        searchView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-
-                if(keyEvent.getAction()==KeyEvent.ACTION_DOWN) {
-                    switch (keyCode) {
-                        case  KeyEvent.KEYCODE_DPAD_CENTER:
-                        case KeyEvent.KEYCODE_ENTER:
-                            return true;
-                        case KeyEvent.KEYCODE_DEL:
-                               // sendJsonRequest();
-                            return true;
-                        default:
-                            break;
-                    }
-                }
-                return false;
-            }
-        });
-        searchView.setOnQueryTextListener(this);
-
-
-
-        item.setActionView(searchView);
-        //return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public void itemClicked(View view, int position) {
-
-        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
-        // positionSearch = getActivity().position;
-        startIntent.putExtra(TAG_POSITION, position);
-        //    startIntent.putExtra(TAG_POSITION2, positionSearch);
-        startActivityForResult(startIntent, SHARING_CODE);
-    }
-    @Override
-    public boolean onQueryTextChange(String query) {
-
-        // TODO Auto-generated method stub
-
-        adapterSoko.filter(query);
-
-     //
-        return true;    }
-
-    private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
-        query = query.toLowerCase();
-
-            //   final ArrayList<Soko> filteredModelList = new ArrayList<>();
-     //   if (query.length() > 2
-     // ) {
-      //      listMovies.clear();
-        final ArrayList<Soko> filteredModelList = new ArrayList<>();
-        for (int i = 0; i< models.size(); i++) {
-            final String text = models.get(i).getTitle().toLowerCase();
-            if (text.contains(query.toLowerCase())) {
-                filteredModelList.add(models.get(i));
-            }
-        }
-        return filteredModelList;
-
-
-    }
-    SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
-
-        @Override
-        public void onRefresh() {
-            //textInfo.setText("WAIT: doing something");
-            mTextError.setVisibility(View.GONE);
-            sendJsonRequest();
-
-            //simulate doing something
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(false);
-                    //  textInfo.setText("DONE");
-                }
-
-            }, 4000);
-        }};
 }

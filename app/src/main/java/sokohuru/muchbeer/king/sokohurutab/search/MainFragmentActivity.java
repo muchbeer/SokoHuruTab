@@ -123,6 +123,7 @@ public class MainFragmentActivity extends Fragment implements AdapterSearch.Clic
     private String text;
     private int enterSearchZone;
     private Soko positionme;
+    public int findPosition;
 
     int positionSearch;
 
@@ -438,14 +439,20 @@ public class MainFragmentActivity extends Fragment implements AdapterSearch.Clic
 
     }
 
+    public void returnPosition( int position) {
+
+
+        findPosition = position;
+        //itemClicked2(view, position);
+    }
+
     @Override
     public void itemClicked2(View view, int positionSearch, int movedItem) {
-Toast.makeText(getActivity(),"This is item:  " + positionSearch, Toast.LENGTH_LONG).show();
 
-
-
+        Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  " + findPosition, Toast.LENGTH_LONG).show();
 
     }
+
 
     @Override
     public void itemClicked(View view, int position) {

@@ -110,6 +110,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
                 addItem(i, model);
             }
         }
+
     }
 
 
@@ -120,10 +121,12 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
             final int fromPosition = slistSokoni.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                moveItem(fromPosition, toPosition);
-                positionForSearch = fromPosition;
-
+              //  positionForSearch = fromPosition;
+                MainFragmentActivity mainFragmentActivity = new MainFragmentActivity();
+                mainFragmentActivity.returnPosition(fromPosition);
               //  adapterPosition = toPosition;
             }
+
         }
     }
 

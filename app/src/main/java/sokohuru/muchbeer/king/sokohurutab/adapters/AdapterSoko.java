@@ -26,6 +26,7 @@ import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
 import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
 import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
+import sokohuru.muchbeer.king.sokohurutab.search.MainFragmentActivity;
 
 /**
  * Created by muchbeer on 6/19/2015.
@@ -45,6 +46,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
+    private static ClickListenerSearch clickListenerSearch;
+
 
 
     public AdapterSoko(Context context) {
@@ -103,6 +106,10 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
             final int fromPosition = slistSokoni.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
+
+                SokoHuruFragment mainFragmentActivity = new SokoHuruFragment();
+                mainFragmentActivity.returnPosition(fromPosition);
+
             }
         }
     }
@@ -166,6 +173,10 @@ public void setClickListener(ClickListener clickListener) {
     this.clickListener = clickListener;
 }
 
+    public void setClickListenerSearch( ClickListenerSearch clickListenerSearch) {
+        this.clickListenerSearch = clickListenerSearch;
+
+    }
     @Override
     public int getItemCount() {
 
@@ -205,7 +216,11 @@ public void setClickListener(ClickListener clickListener) {
             if(clickListener!=null) {
                 clickListener.itemClicked(view, getPosition());
 
-            }
+            } if(clickListenerSearch !=null) {
+
+
+               clickListenerSearch.itemClicked2(view,  getPosition());
+           }
        }
 
 
@@ -215,6 +230,9 @@ public interface ClickListener{
     public void itemClicked(View view, int position);
 }
 
+    public interface ClickListenerSearch {
+        public void itemClicked2(View view, int positionSearch);
+    }
 
     public ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
        // query = query.toLowerCase();

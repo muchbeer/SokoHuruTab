@@ -65,13 +65,14 @@ import sokohuru.muchbeer.king.sokohurutab.extras.Constants;
 import sokohuru.muchbeer.king.sokohurutab.extras.Keys;
 import sokohuru.muchbeer.king.sokohurutab.loggin.L;
 import sokohuru.muchbeer.king.sokohurutab.network.VolleySingleton;
+import sokohuru.muchbeer.king.sokohurutab.search.AdapterSearch;
 
 import static sokohuru.muchbeer.king.sokohurutab.extras.Keys.EndpointBoxOffice.*;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListener, SearchView.OnQueryTextListener {
+public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListenerSearch, AdapterSoko.ClickListener, SearchView.OnQueryTextListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -116,6 +117,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private int positionSearch;
     private ProgressBar circularProgress;
     private TextView txtswipeRefresh;
+    private int findPosition;
+    private int enterSearchZone;
 
 
     // TODO: Rename and change types and number of parameters
@@ -203,6 +206,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     private ArrayList<Soko> parseJSONResponse(JSONObject response) {
         ArrayList<Soko> listMovies = new ArrayList<>();
+        String matchFound = "N";
 
         if (response == null || response.length() == 0) {
             L.t(getActivity(), "Refresh data");
@@ -260,7 +264,19 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                    sokoni.setReleaseYear(releaseYear);
                     */
 
-                    if(!title.equals(Constants.NA)) {
+                    matchFound ="N";
+                    for (int j=0; j<listMovies.size(); j++) {
+                        if(listMovies.get(j).getTitle().equals(sokoni.getTitle())) {
+                            matchFound="Y";
+                        }
+                    }
+                    if(matchFound =="N") {
+                        listMovies.add(sokoni);
+                    }
+
+
+
+                if(!title.equals(Constants.NA)) {
                         listMovies.add(sokoni);
                     }
 
@@ -410,18 +426,31 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         //return true;
 
     }
+    public void returnPosition( int position) {
 
 
+        findPosition = position;
+        //itemClicked2(view, position);
+    }
+
+    @Override
+    public void itemClicked2(View view, int positionSearch) {
+        Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  " + findPosition, Toast.LENGTH_LONG).show();
+
+    }
 
     @Override
     public void itemClicked(View view, int position) {
         // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
         // result = String.valueOf(position);
-        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
-       // positionSearch = getActivity().position;
-        startIntent.putExtra(TAG_POSITION, position);
-    //    startIntent.putExtra(TAG_POSITION2, positionSearch);
-        startActivityForResult(startIntent, SHARING_CODE);
+        if(enterSearchZone != 1) {
+            Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
+            // positionSearch = getActivity().position;
+            startIntent.putExtra(TAG_POSITION, position);
+            //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+            startActivityForResult(startIntent, SHARING_CODE);
+
+        }
 
     }
 
@@ -433,12 +462,12 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public boolean onQueryTextChange(String query) {
+        adapterSoko.setClickListenerSearch(this);
 
-        adapterSoko.setSokoList(listMovies);
        // final ArrayList<Soko> filteredModelList = adapterSoko.filter(listMovies, query);
        // adapterSoko.filter( query);
 
-        final ArrayList<Soko> filteredModelList = filter(listMovies, query);
+        final ArrayList<Soko> filteredModelList = filterBestSearch(listMovies, query);
         adapterSoko.animateTo(filteredModelList);
       //  adapterSoko.filter(listMovies, query);
      //   listSokoni.scrollToPosition(0);
@@ -463,7 +492,29 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         return filteredModelList;
     }
 
+    private ArrayList<Soko> filterBestSearch(ArrayList<Soko> models, String query) {
+        query = query.toLowerCase();
+        enterSearchZone = 1;
 
+        ArrayList<Soko> filteredModelList = new ArrayList<>();
+        if (query.length() == 0) {
+            //  listSokoni.setAdapter(adapterSoko);
+            sendJsonRequest();
+            //   InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            //   imm.hideSoftInputFromWindow(View.getWindowToken(), 0);
+        } else {
+            for (int i = 0; i<listMovies.size(); i++) {
+                final String text = listMovies.get(i).getTitle().toLowerCase();
+                if (text.contains(query)) {
+                    filteredModelList.add(listMovies.get(i));
+                    positionSearch = i;
+                }
+            }
+
+        }
+        adapterSoko.notifyDataSetChanged();
+        return filteredModelList;
+    }
     SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
 
         @Override
@@ -483,4 +534,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
             }, 4000);
         }};
+
+
+
 }

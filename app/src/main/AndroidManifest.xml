@@ -7,6 +7,9 @@
     <!-- Optional permission for reliable local dispatching on non-Google Play devices -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+
     <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
@@ -25,22 +28,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".search.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="sokohuru.muchbeer.king.sokohurutab.MESSAGE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".detail.MainActivityDetail"
-            android:parentActivityName=".tab.MainActivitySoko" >
+            android:parentActivityName=".MainActivity" >
 
             <!-- To support below API Level 14 -->
             <meta-data
@@ -94,6 +83,11 @@
         <activity
             android:name=".tab.MainActivitySoko"
             android:label="@string/title_activity_main_activity_soko" >
+        </activity>
+
+        <activity
+            android:name=".search.MainActivity"
+            android:label="Tafuta" >
         </activity>
     </application>
 

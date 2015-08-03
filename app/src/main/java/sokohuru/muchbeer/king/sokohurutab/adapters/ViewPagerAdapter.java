@@ -36,24 +36,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
            // sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment tab1 = new sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment();
 
 
-            WelcomeFragment tab1 = new WelcomeFragment();
+            SokoHuruFragment tab1 = new SokoHuruFragment();
 
             return tab1;
                 }
 
         else if(position ==1) {
-            SokoHuruFragment tab2 = new SokoHuruFragment();
+            LoginFragment tab2 = new LoginFragment();
 
             return tab2;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
-        {
-            LoginFragment tab3 = new LoginFragment();
-            return tab3;
-
-        }
 
 
+        return null;
     }
 
 // This method return the titles for the Tabs in the Tab Strip
