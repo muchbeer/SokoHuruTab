@@ -2,6 +2,7 @@ package sokohuru.muchbeer.king.sokohurutab.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private static Context context;
     private static ClickListener clickListener;
     private static ClickListenerSearch clickListenerSearch;
-
+    private String URL_FOR_NULL = "http://sokouhuru.com/image/sokohuru.png";
+    private CharSequence SOKOHURU = "sokouhuru";
 
 
     public AdapterSoko(Context context) {
@@ -145,11 +147,18 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     public void onBindViewHolder(final ViewHolderSokoni holder, int position) {
         Soko currentItem = slistSokoni.get(position);
 
-        holder.sokoTitle.setText(currentItem.getTitle());
-        holder.sokoGenre.setText(currentItem.getGenre());
+        holder.sokoTitle.setText(currentItem.getName());
+        holder.sokoGenre.setText(currentItem.getPrice());
+        holder.sokoLocation.setText(currentItem.getLocation());
+        holder.sokoContact.setText(currentItem.getContact());
+
+
+
+        //Soko Huru detail
 
         String urlThumbnail = currentItem.getImage();
-        if(urlThumbnail !=null) {
+        String urlThumbnailReplacement = URL_FOR_NULL;
+        if(urlThumbnail.length() > 10) {
             imageLoader.get(urlThumbnail, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean b) {
@@ -164,7 +173,23 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
                 }
             });
         }
+else {
+           // img.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),R.drawable.chen_gong));
 
+            imageLoader.get(urlThumbnailReplacement, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean b) {
+                    holder.sokoThumbnail.setImageBitmap(response.getBitmap());
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                    // L.t(context, volleyError.toString());
+                    // holder.sokoThumbnail.setImageBitmap();
+                }
+            });
+        }
 
 
   }
@@ -190,6 +215,8 @@ public void setClickListener(ClickListener clickListener) {
        public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
+            public TextView  sokoLocation;
+            public TextView sokoContact;
      //  private ClickListener clickListener;
 
 
@@ -199,6 +226,9 @@ public void setClickListener(ClickListener clickListener) {
             sokoThumbnail = (ImageView) itemView.findViewById(R.id.sokoThumbnail);
             sokoTitle = (TextView) itemView.findViewById(R.id.sokoTitle);
             sokoGenre = (TextView) itemView.findViewById(R.id.sokoRating);
+            sokoLocation = (TextView) itemView.findViewById(R.id.sokoLocation);
+           sokoContact = (TextView) itemView.findViewById(R.id.sokoContact);
+
 
 
             itemView.setOnClickListener(this);

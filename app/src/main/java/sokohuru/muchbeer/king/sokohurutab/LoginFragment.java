@@ -30,11 +30,6 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
-import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
-import sokohuru.muchbeer.king.sokohurutab.extras.AddNewItem;
-import sokohuru.muchbeer.king.sokohurutab.search.*;
-import sokohuru.muchbeer.king.sokohurutab.search.MainActivity;
-
 public class LoginFragment extends Fragment implements
         ConnectionCallbacks, OnConnectionFailedListener,
         View.OnClickListener {
@@ -114,7 +109,7 @@ public class LoginFragment extends Fragment implements
     @Override
     public void onConnected(Bundle bundle) {
 
-        mSignInButton.setEnabled(false);
+        mSignInButton.setEnabled(true);
         mSignOutButton.setEnabled(true);
         mRevokeButton.setEnabled(true);
 
@@ -159,8 +154,8 @@ public class LoginFragment extends Fragment implements
         if (!mGoogleApiClient.isConnecting()) {
             switch (view.getId()) {
                 case R.id.sign_in_button:
-                    mStatus.setVisibility(View.VISIBLE);
-                    mStatus.setText("Subiri unajisajiri....");
+                   // mStatus.setVisibility(View.VISIBLE);
+                   // mStatus.setText("Subiri unajisajiri....");
                     mGoogleApiClient.connect();
                 //    mGoogleApiClient.connect();
                     resolveSignInError();

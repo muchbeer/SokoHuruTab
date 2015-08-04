@@ -35,8 +35,8 @@ import java.util.Map;
 
 import sokohuru.muchbeer.king.sokohurutab.*;
 import sokohuru.muchbeer.king.sokohurutab.MainActivity;
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.connectdata.AppConfig;
-import sokohuru.muchbeer.king.sokohurutab.connectdata.AppController;
 import sokohuru.muchbeer.king.sokohurutab.connectdata.SessionManager;
 
 
@@ -66,7 +66,7 @@ public class FragmentThree extends Fragment {
     private SessionManager session;
     private SQLiteHandler db;
     private EditText edtPlace, edtDesc, edtName, edtPrice, edtContact;
-    private String place, descr;
+    private String location, description;
  //   private static final String TAG = "Tell error";
 
     private static final String TAG = FragmentThree.class.getSimpleName();
@@ -86,7 +86,7 @@ public class FragmentThree extends Fragment {
 
     //Getting username from Google
     private String SHARED_KEY = "Name";
-    String username;
+    String login_username;
 
 
     @Override
@@ -135,26 +135,20 @@ public class FragmentThree extends Fragment {
 
                 editor = sharedpreferences.edit();
 
-                place  = edtPlace.getText().toString();
-                descr  = edtDesc.getText().toString();
+                location  = edtPlace.getText().toString();
+                description  = edtDesc.getText().toString();
                 name = edtName.getText().toString();
                 price = edtPrice.getText().toString();
                 contact =edtContact.getText().toString();
 
                   image =    sharedpreferences.getString(KEY_LINK, "");
-               username = sharedpreferences.getString(SHARED_KEY, "");// getting Long
-               Toast.makeText(getActivity(), "Email yako ni: " + username , Toast.LENGTH_LONG).show();
+                login_username = sharedpreferences.getString(SHARED_KEY, "");// getting Long
+               // Toast.makeText(getActivity(), "Email yako ni: " + username , Toast.LENGTH_LONG).show();
 
-                //   pref.getString("key_name5", null);          // getting String
-              //  txtName.setText(putName);
-
-
-               // txtName.setText(itemName);
-                             // txtLink.setText(position);
 
                 //INSERTING STAFF
                 if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
-                        && image.length()>0 && !place.isEmpty() && !descr.isEmpty()) {
+                        && image.length()>0 && !location.isEmpty() && !description.isEmpty()) {
                     registerUser();
                     editor.clear();
                     editor.commit();
@@ -213,8 +207,12 @@ public class FragmentThree extends Fragment {
                 if(pointError.contains("Ongera")) {
                     Toast.makeText(getActivity(), "Umeweza asilimia zote", Toast.LENGTH_LONG).show();
 
-                    Intent getBackToMainActivity = new Intent(getActivity(), MainActivity.class);
+                    Intent getBackToMainActivity = new Intent(getActivity(),
+                            sokohuru.muchbeer.king.sokohurutab.MainActivity.class);
+                    getBackToMainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     getActivity().startActivity(getBackToMainActivity);
+
+
                 } else {
                     Toast.makeText(getActivity(), "kuna tatizo " + pointError, Toast.LENGTH_LONG).show();
                 }
@@ -240,15 +238,17 @@ public class FragmentThree extends Fragment {
                 params.put("price", price);
                 params.put("image", image);
                 params.put("contact", contact);
-                params.put("place", place);
-                params.put("descr", descr);
+                params.put("location", location);
+                params.put("description", description);
+                params.put("login_username", login_username);
+
                 return params;
             }
 
         };
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq);
+        MyApplication.getsInstance().addToRequestQueue(strReq);
     }
 
     @Override

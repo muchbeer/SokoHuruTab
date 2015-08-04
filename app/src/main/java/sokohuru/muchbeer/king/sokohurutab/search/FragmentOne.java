@@ -1,6 +1,7 @@
 package sokohuru.muchbeer.king.sokohurutab.search;
 
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,8 +10,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -99,29 +102,17 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
             startActivityForResult(Intent.createChooser(intent, "Complete action using"), 1);
         }
 
-        /**
-        else if (view==uploadButton) {
 
-            // progressBar = new ProgressBar(view.getContext());
-
-            //  progressBar.setVisibility(View.VISIBLE);
-            // dialog = ProgressDialog.show(MainActivity.this, "", "Uploading file...", true);
-
-            uploadPicha();
-        }
-
-         **/
     }
 
     private void uploadPicha() {
 
-        /**
-        dialog = new ProgressDialog(getActivity(),
-                R.style.AppTheme_Dark_Dialog);
-        dialog.setIndeterminate(true);
+        dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Tafadhari subiri...");
+        dialog.setCancelable(true);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         dialog.show();
-**/
         //  messageText.setText("uploading started.....");
         new Thread(new Runnable() {
             public void run() {
@@ -134,7 +125,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                         while (serverResponseCode != 200) {
 
                             // uploading the file to server
-                            new DownloadFileAsync().execute();
+                            uploadFile();
+                          //  new DownloadFileAsync().execute();
                             mHandler.post(new Runnable() {
                                 public void run() {
                                    // progressBar.setProgress(serverResponseCode);
@@ -185,6 +177,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
         
         imageview = (ImageView)view.findViewById(R.id.imageViewPic);
+
         title=(EditText) view.findViewById(R.id.title);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         txtPercentage = (TextView) view.findViewById(R.id.txtPercentage);
@@ -196,6 +189,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         // progressBar.setVisibility(View.VISIBLE);
         upLoadServerUri = "http://sokouhuru.com/uploads.php";
         ImageView img= new ImageView(getActivity());
+
         return view;
 
     }
@@ -220,17 +214,15 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         Uri selectedImageUri = data.getData();
         imagepath = getPath(selectedImageUri);
         BitmapFactory.Options options = new BitmapFactory.Options();
-       options.inJustDecodeBounds = true;
-        options.inScaled= true;
-        options.inDensity = srcWidth;
-        options.inTargetDensity = dstWidth * options.inSampleSize;
-        options.inSampleSize= 4;
+      // options.inJustDecodeBounds = true;
+     //  options.inScaled= true;
+         options.inSampleSize= 4;
         Bitmap bitmap= BitmapFactory.decodeFile(imagepath, options);
         imageview.setImageBitmap(bitmap);
         // messageText.setText("Bofya Pakua kutunza picha.");
        // uploadButton.setVisibility(View.VISIBLE);
-     //   uploadPicha();
-        new DownloadFileAsync().execute();
+     uploadPicha();
+        //new DownloadFileAsync().execute();
 
     }
 
@@ -243,51 +235,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     }
 
 
-    class DownloadFileAsync extends AsyncTask<Void, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-      
-            super.onPreExecute();
-
-         dialog = new ProgressDialog(getActivity());
-          dialog.setMessage("Tafadhari subiri...");
-           dialog.setCancelable(true);
-           dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
-           dialog.show();
-
-            // setting progress bar to zero
-          // progressBar.setProgress(0);
-            //return dialog;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-            // Making progress bar visible
-         //   progressBar.setVisibility(View.VISIBLE);
-
-            // updating progress bar value
-        //  progressBar.setProgress(progress[0]);
-
-            // updating percentage value
-         //   txtPercentage.setText(String.valueOf(progress[0]) + "%");
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-           // int count;
-            uploadFile();
-            return null;
-        }
 
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-                dialog.dismiss();
-        }
 
         public int uploadFile() {
 
@@ -327,7 +276,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
             if (!sourceFile.isFile()) {
 
-                //dialog.dismiss();
+                dialog.dismiss();
                 // progressBar.setVisibility(View.GONE);
 
                 Log.e("uploadFile", "Source File not exist :" + imagepath);
@@ -385,6 +334,14 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                     // read file and write it into form...
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
+                    while (bytesRead > 0) {
+
+                        dos.write(buffer, 0, bufferSize);
+                        bytesAvailable = fileInputStream.available();
+                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                    }
                     //  int lengthOfFile = conn.getContentLength();
 
                     // send multipart form data necesssary after file data...
@@ -413,7 +370,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                                 int num = 100;
                                 // progressBar.setVisibility(View.GONE);
                                 // messageText.setText(msg);
-                                //  dialog.dismiss();
+                                 dialog.dismiss();
                                 String msg = " Umefanikiwa kuweka picha, sasa weka bidhaa.";
                                 messageText.setText(msg);
                                   messageText.setTextColor(getActivity().getResources().getColor(R.color.colorSuccess));
@@ -461,12 +418,14 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                     ex.printStackTrace();
 
                     getActivity().runOnUiThread(new Runnable() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         public void run() {
 
                             //  progressBar.setVisibility(View.GONE);
                             messageText.setText("Tatizo la kimtandao, Jaribu tena.");
                               messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
 
+                            imageview.setBackground(getResources().getDrawable(R.drawable.material));
                             //  Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -474,7 +433,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                     Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
                 } catch (Exception e) {
 
-//                dialog.dismiss();
+               dialog.dismiss();
                     e.printStackTrace();
 
                     getActivity().runOnUiThread(new Runnable() {
@@ -497,7 +456,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         }
 
 
-    }
+
 
 
     @Override

@@ -31,7 +31,7 @@
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false" />
+        android:enabled="true" />
 
     <Button
         android:id="@+id/sign_out_button"
@@ -48,7 +48,7 @@
         android:id="@+id/revoke_access_button"
         android:padding="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="Batilisha usajiri"
         style="?android:attr/borderlessButtonStyle"
         android:textColor="@color/colorSuccess"

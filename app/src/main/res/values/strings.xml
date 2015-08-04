@@ -7,7 +7,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="error_timeout">Oops! Tatizo la mtandao, futa chini</string>
+    <string name="error_timeout">Oops! Tatizo la mtandao, vuta chini</string>
     <string name="error_auth_failure">Oops! Tatizo la kimtandao </string>
     <string name="error_network">Oops! Mitambo ya soko huru kun tatizo</string>
     <string name="error_parser">Oops! Tatizo la kupokea taarifa</string>

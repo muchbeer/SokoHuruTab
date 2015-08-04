@@ -37,9 +37,7 @@
         android:layout_width="160dp"
         android:layout_height="155dp"
         android:scaleType="fitXY"
-
         android:paddingBottom="5dp"
-        android:src="@drawable/ic_launcher"
                       />
 
     <LinearLayout
@@ -59,6 +57,7 @@
                       />
 
         <TextView
+            android:layout_gravity="center_horizontal"
             android:paddingTop="5dp"
             android:id="@+id/sokoTitle"
             android:layout_width="wrap_content"
@@ -66,26 +65,47 @@
             android:paddingLeft="5dp"
             android:paddingRight="2dp"
             android:gravity="center_vertical"
-            android:textColor="@android:color/black"
+            android:textColor="@color/primary"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Galaxy"
-            android:textSize="15dp"
+            android:textSize="17dp"
             android:maxLength="16"
             android:singleLine="true"
             android:ellipsize="end"
            />
 
         <TextView
-            android:padding="5dp"
+            android:padding="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sokoRating"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="17dp"
+            android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="Amount"
             android:singleLine="true"
                       />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sokoLocation"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="13dp"
+            android:textColor="@color/black"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:paddingTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sokoContact"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="13dp"
+            android:textColor="@color/black"
+            android:singleLine="true"
+            />
     </LinearLayout>
 
 </RelativeLayout>

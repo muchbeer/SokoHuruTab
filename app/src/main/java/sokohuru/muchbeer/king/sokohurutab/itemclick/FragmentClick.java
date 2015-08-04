@@ -39,6 +39,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class FragmentClick  extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
+    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_electronics.php";
     private static final String STATE_SOKO = "State Sokoni";
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
@@ -92,6 +93,8 @@ public class FragmentClick  extends Fragment {
      String title;
     private NetworkImageView loadImageView;
     private CollapsingToolbarLayout collapsingToolbar;
+    private TextView txtPrice;
+    private TextView txtContact, txtLocation, txtDesc,txtUsername, txtCreated;
     //  private char[] title;
 
 
@@ -178,13 +181,22 @@ public class FragmentClick  extends Fragment {
                 title = Constants.NA;
                 String imaging = Constants.NA;
 
+                String name = Constants.NA;
+                String price = Constants.NA;
+                String location=Constants.NA;
+                String contact = Constants.NA;
+                String username = Constants.NA;
+                String description = Constants.NA;
+                String Created = Constants.NA;
+
+
                 String rating = Constants.NA;
                 String genre = Constants.NA;
                 JSONObject currentMarket = arrayMoview.getJSONObject(position);
 
 
-                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_TITLE) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_TITLE)) {
-                    title = currentMarket.getString(Keys.EndpointBoxOffice.KEY_TITLE);
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_NAME) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_NAME)) {
+                    name = currentMarket.getString(Keys.EndpointBoxOffice.KEY_NAME);
                 }
 
                 if(currentMarket.has(Keys.EndpointBoxOffice.KEY_IMAGE) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_IMAGE)) {
@@ -192,24 +204,56 @@ public class FragmentClick  extends Fragment {
                     imaging = currentMarket.getString(Keys.EndpointBoxOffice.KEY_IMAGE);
 
                 }
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_PRICE) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_PRICE)) {
+                    price = currentMarket.getString(Keys.EndpointBoxOffice.KEY_PRICE);
+                }
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_LOCATION) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_LOCATION)) {
+                    location = currentMarket.getString(Keys.EndpointBoxOffice.KEY_LOCATION);
+                }
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_DESC) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_DESC)) {
+                    description = currentMarket.getString(Keys.EndpointBoxOffice.KEY_DESC);
+                }
 
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_CONTACT) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_CONTACT)) {
+                    contact = currentMarket.getString(Keys.EndpointBoxOffice.KEY_CONTACT);
+                }
 
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_CREATE) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_CREATE)) {
+                    Created = currentMarket.getString(Keys.EndpointBoxOffice.KEY_CREATE);
+                }
 
+                if (currentMarket.has(Keys.EndpointBoxOffice.KEY_USER) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_USER)) {
+                    username = currentMarket.getString(Keys.EndpointBoxOffice.KEY_USER);
+                }
                 Soko sokoni = new Soko();
 
                 //sokoni setTitle
-                sokoni.setTitle(title);
+                sokoni.setName(name);
                 sokoni.setImage(imaging);
+                sokoni.setPrice(price);
+                sokoni.setContact(contact);
+                sokoni.setDesc(description);
+                sokoni.setLocation(location);
+                sokoni.setUsername(username);
+                sokoni.setCreated(Created);
 
-                txtName.setText(title);
-                collapsingToolbar.setTitle(title);
+             //   txtName.setText(title);
+
+                txtPrice.setText(price);
+                txtContact.setText(contact);
+                txtDesc.setText(description);
+                txtCreated.setText(Created);
+                txtUsername.setText(username);
+                txtLocation.setText(location);
+
+                collapsingToolbar.setTitle(name);
 
                 mImageLoader = VolleySingleton.getsInstance().getImageLoader();
 
                 loadImageView.setImageUrl(imaging, mImageLoader);
 
 
-                Toast.makeText(getActivity(), "Item is: " + title,Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "Item is: " + title,Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
             }
@@ -233,7 +277,16 @@ public class FragmentClick  extends Fragment {
        
 
 
-        txtName = (TextView) rootView.findViewById(R.id.name);
+       // txtName = (TextView) rootView.findViewById(R.id.name);
+        txtPrice = (TextView) rootView.findViewById(R.id.sokoPrice);
+        txtContact = (TextView) rootView.findViewById(R.id.sokoContact);
+        txtLocation = (TextView) rootView.findViewById(R.id.sokoLocation);
+        txtCreated = (TextView) rootView.findViewById(R.id.sokoCreated);
+        txtDesc = (TextView) rootView.findViewById(R.id.sokoDesc);
+        txtUsername = (TextView) rootView.findViewById(R.id.sokoUser);
+
+
+
         mTextError = (TextView) rootView.findViewById(R.id.txtError);
         loadImageView = (NetworkImageView) rootView.findViewById(R.id.image);
 

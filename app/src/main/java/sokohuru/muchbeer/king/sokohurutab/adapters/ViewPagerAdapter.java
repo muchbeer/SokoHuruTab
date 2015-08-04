@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import sokohuru.muchbeer.king.sokohurutab.LoginFragment;
 import sokohuru.muchbeer.king.sokohurutab.SokoHuruFragment;
-import sokohuru.muchbeer.king.sokohurutab.Sokoni.WelcomeFragment;
 
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {

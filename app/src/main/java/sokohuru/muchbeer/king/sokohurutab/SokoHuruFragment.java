@@ -79,7 +79,12 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private static final String ARG_PARAM1 = "position";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
+    //public static final String URL_SOKO = "http://sokouhuru.com/ccm/uchaguzi2.json";
+
+    //public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_products.php";
+
+    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_electronics.php";
+
     private static final String STATE_SOKO = "State Sokoni";
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
@@ -227,13 +232,19 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
                     String title = Constants.NA;
                     String imaging = Constants.NA;
-
                     String rating=Constants.NA;
                     String genre=Constants.NA;
+
+                    //soko huru
+                    String name = Constants.NA;
+                    String price = Constants.NA;
+                    String contact = Constants.NA;
+                    String location = Constants.NA;
+
                     JSONObject currentMarket = arrayMoview.getJSONObject(i);
 
-                    if(currentMarket.has(KEY_TITLE) && !currentMarket.isNull(KEY_TITLE)) {
-                        title = currentMarket.getString(KEY_TITLE);
+                    if(currentMarket.has(KEY_NAME) && !currentMarket.isNull(KEY_NAME)) {
+                        name = currentMarket.getString(KEY_NAME);
                     }
 
                     if(currentMarket.has(KEY_IMAGE) && !currentMarket.isNull(KEY_IMAGE)) {
@@ -242,24 +253,31 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
                     }// int releaseYear = currentMarket.getInt(KEY_YEAR);
 
-                    if(currentMarket.has(KEY_RATING) && !currentMarket.isNull(KEY_RATING)) {
+                    if(currentMarket.has(KEY_PRICE) && !currentMarket.isNull(KEY_PRICE)) {
 
-                        rating = currentMarket.getString(KEY_RATING);
+                        price = currentMarket.getString(KEY_PRICE);
 
                     }
-                    if(currentMarket.has(KEY_GENRE) && !currentMarket.isNull(KEY_GENRE)) {
+                    if(currentMarket.has(KEY_CONTACT) && !currentMarket.isNull(KEY_CONTACT)) {
 
-                        genre = currentMarket.getString(KEY_GENRE);
+                        contact = currentMarket.getString(KEY_CONTACT);
                     }
 
-                    data.append(title + "\n");
+                    if(currentMarket.has(KEY_LOCATION) && !currentMarket.isNull(KEY_LOCATION)) {
+
+                        location = currentMarket.getString(KEY_LOCATION);
+                    }
+
+                    data.append(name+ "\n");
 
                     Soko sokoni = new Soko();
                     // sokoni.setId(id);
-                    sokoni.setTitle(title);
+                    sokoni.setName(name);
                     sokoni.setImage(imaging);
                     //   sokoni.setRating(rating);
-                    sokoni.setGenre(genre);
+                    sokoni.setPrice(price);
+                    sokoni.setContact(contact);
+                    sokoni.setLocation(location);
                     //  sokoni.setReleaseYear(releaseYear);
 
                   /*
@@ -268,6 +286,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     */
 
                     matchFound ="N";
+                    /*
                     for (int j=0; j<listMovies.size(); j++) {
                         if(listMovies.get(j).getTitle().equals(sokoni.getTitle())) {
                             matchFound="Y";
@@ -277,9 +296,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                         listFilterBest.add(sokoni);
                     }
 
+*/
 
-
-                if(!title.equals(Constants.NA)) {
+                if(!name.equals(Constants.NA)) {
                         listMovies.add(sokoni);
                     }
 
@@ -287,8 +306,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
 
                 // L.t(getActivity(), data.toString());
-
-          //      L.T(getActivity(), listMovies.toString());
+            //    L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
 
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
@@ -507,7 +525,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
             //   imm.hideSoftInputFromWindow(View.getWindowToken(), 0);
         } else {
             for (int i = 0; i<listMovies.size(); i++) {
-                final String text = listMovies.get(i).getTitle().toLowerCase();
+                final String text = listMovies.get(i).getName().toLowerCase();
                 if (text.contains(query)) {
                     filteredModelList.add(listMovies.get(i));
                     positionSearch = i;

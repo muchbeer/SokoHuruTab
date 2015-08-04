@@ -105,10 +105,10 @@ android:fitsSystemWindows="true">
                 >
 
                 <TextView
+                    android:id="@+id/sokoUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Namba ya simu"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -117,7 +117,7 @@ android:fitsSystemWindows="true">
                     android:layout_height="0.3dp"
                     android:background="@android:color/darker_gray"
                     android:layout_marginTop="7dp"
-                    android:layout_marginBottom="7dp"
+                    android:layout_marginBottom="12dp"
                     android:layout_marginRight="4dp"
 
                     />
@@ -131,16 +131,15 @@ android:fitsSystemWindows="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/txtContact"
-                        android:text="27712123123"
-                        android:textSize="15dp"
+                        android:id="@+id/sokoContact"
+                        android:textSize="14dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_weight="1"
                         />
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_settings_phone_black_24dp"/>
+                        android:src="@drawable/ic_phone"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -164,13 +163,13 @@ android:fitsSystemWindows="true">
 
 
                 <TextView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Gongo la mboto"
-                    android:textSize="18dp"
-                    android:paddingBottom="17dp"
+                    android:textSize="14dp"
+                    android:paddingBottom="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:id="@+id/name"></TextView>
+                    android:id="@+id/sokoLocation"></TextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -181,9 +180,8 @@ android:fitsSystemWindows="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/txtPrice"
-                        android:text="277000000"
-                        android:textSize="23dp"
+                        android:id="@+id/sokoPrice"
+                        android:textSize="15dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_weight="1"
                         />
@@ -192,7 +190,7 @@ android:fitsSystemWindows="true">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tsh"
-                        android:textSize="17dp"
+                        android:textSize="15dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         />
 
@@ -219,7 +217,9 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Muuzaji"
+                    android:text="Imetangazwa"
+                    android:textColor="@color/primary"
+                    android:textSize="15dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -235,8 +235,7 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="gman2them@gmail.com"
-                    android:id="@+id/txtUser"/>
+                    android:id="@+id/sokoCreated"/>
 
             </LinearLayout>
 
@@ -258,6 +257,8 @@ android:fitsSystemWindows="true">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Maelezo"
+                    android:textColor="@color/primary"
+                    android:textSize="15dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -273,10 +274,8 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Maelezo mengi sana yatakuwa humu ndan
-                        skksksjskjs maelezio ya kuja kuwa ni mzuru
-                        sana kwa sababu ni muongongozi"
-                    android:id="@+id/txtDesc"/>
+                    android:textSize="13dp"
+                    android:id="@+id/sokoDesc"/>
 
             </LinearLayout>
 

@@ -17,6 +17,17 @@ public class Soko implements Parcelable{
     private String rating;
     private String genre;
 
+    //Sokoni
+    private String name;
+    private String price;
+    private String desc;
+    private String contact;
+    private String location;
+    private String username;
+    private String pid;
+    private String created;
+
+
     public Soko() {
 
     }
@@ -27,6 +38,14 @@ public class Soko implements Parcelable{
         image=input.readString();
         rating=input.readString();
         genre=input.readString();
+
+        name= input.readString();
+        price=input.readString();
+        desc=input.readString();
+        contact=input.readString();
+        location=input.readString();
+        username=input.readString();
+        created = input.readString();
     }
 
     public Soko(int id,
@@ -34,7 +53,15 @@ public class Soko implements Parcelable{
                 String image,
                 int releaseYear,
                 String rating,
-                String genre) {
+                String genre,
+
+                String name,
+                String price,
+                String desc,
+                String contact,
+                String location,
+                String username,
+                String created) {
 
         this.id = id;
         this.title = title;
@@ -42,6 +69,14 @@ public class Soko implements Parcelable{
         this.releaseYear = releaseYear;
         this.rating = rating;
         this.genre=genre;
+
+        this.name = name;
+        this.price=price;
+        this.desc=price;
+        this.contact=contact;
+        this.location=location;
+        this.username=username;
+        this.created=created;
 
     }
 
@@ -61,6 +96,61 @@ public class Soko implements Parcelable{
         this.title = title;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
     public String getImage() {
         return image;
     }
@@ -68,6 +158,9 @@ public class Soko implements Parcelable{
     public void setImage(String image) {
         this.image= image;
     }
+
+
+
 
     public int getReleaseYear() {
         return releaseYear;

@@ -28,7 +28,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
-import sokohuru.muchbeer.king.sokohurutab.connectdata.Communicator;
 import sokohuru.muchbeer.king.sokohurutab.R;
 
 import static sokohuru.muchbeer.king.sokohurutab.search.FragmentThree.*;
@@ -186,5 +185,9 @@ public class MainActivity extends AppCompatActivity {
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
