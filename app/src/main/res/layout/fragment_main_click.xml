@@ -106,7 +106,7 @@ android:fitsSystemWindows="true">
 
                 <TextView
                     android:id="@+id/sokoUser"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
@@ -135,11 +135,13 @@ android:fitsSystemWindows="true">
                         android:textSize="14dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/card_margin"
                         />
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_phone"/>
+                        android:src="@drawable/ic_phone"
+                        android:layout_marginRight="@dimen/card_margin"/>
                 </LinearLayout>
 
             </LinearLayout>

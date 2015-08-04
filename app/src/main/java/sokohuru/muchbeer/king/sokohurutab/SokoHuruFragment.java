@@ -83,7 +83,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     //public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_products.php";
 
-    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_electronics.php";
+    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_products.php";
 
     private static final String STATE_SOKO = "State Sokoni";
     private static final int SHARING_CODE = 1;
@@ -456,7 +456,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public void itemClicked2(View view, int positionSearch) {
-        Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  " + positionSearch, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  ", Toast.LENGTH_LONG).show();
 
     }
 

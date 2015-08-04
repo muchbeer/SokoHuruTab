@@ -79,9 +79,6 @@ public class FragmentClick  extends Fragment {
     private RecyclerView listSokoni;
     private RecyclerView.LayoutManager sLayoutManager;
 
-
-
-
     // private OnFragmentInteractionListener mListener;
     private VolleySingleton volleySingleton;
 

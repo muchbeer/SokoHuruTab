@@ -211,6 +211,7 @@ public class LoginFragment extends Fragment implements
             }
         } else {
             // You have a play services error -- inform the user
+            Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_LONG).show();
         }
     }
 
