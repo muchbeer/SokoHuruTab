@@ -61,7 +61,7 @@ public class FragmentClick  extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_electronics.php";
+    public static final String URL_SOKO = "http://sokouhuru.com/kamaz_get_all_products.php";
     private static final String STATE_SOKO = "State Sokoni";
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
@@ -92,6 +92,7 @@ public class FragmentClick  extends Fragment {
     private CollapsingToolbarLayout collapsingToolbar;
     private TextView txtPrice;
     private TextView txtContact, txtLocation, txtDesc,txtUsername, txtCreated;
+    private String NULLIMAGE = "sokouhuru.com/image/sokohuru.png";
     //  private char[] title;
 
 
@@ -226,15 +227,15 @@ public class FragmentClick  extends Fragment {
 
                 //sokoni setTitle
                 sokoni.setName(name);
-                sokoni.setImage(imaging);
                 sokoni.setPrice(price);
                 sokoni.setContact(contact);
                 sokoni.setDesc(description);
                 sokoni.setLocation(location);
                 sokoni.setUsername(username);
                 sokoni.setCreated(Created);
-
+                sokoni.setImage(imaging);
              //   txtName.setText(title);
+
 
                 txtPrice.setText(price);
                 txtContact.setText(contact);
@@ -247,9 +248,14 @@ public class FragmentClick  extends Fragment {
 
                 mImageLoader = VolleySingleton.getsInstance().getImageLoader();
 
-                loadImageView.setImageUrl(imaging, mImageLoader);
+                if(imaging.length()>9) {
+                    loadImageView.setImageUrl(imaging, mImageLoader);
+
+                }else {
+                    loadImageView.setBackground(getResources().getDrawable(R.drawable.sokohuru));
 
 
+                }
                // Toast.makeText(getActivity(), "Item is: " + title,Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());

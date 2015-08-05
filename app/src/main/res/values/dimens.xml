@@ -24,6 +24,8 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
       <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_margin_detail">8dp</dimen>
+
     <dimen name="list_item_avatar_size">40dp</dimen>
 
     <dimen name="statusbar_size">24dp</dimen>

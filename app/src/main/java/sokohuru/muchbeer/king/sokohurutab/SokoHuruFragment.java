@@ -483,7 +483,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     @Override
     public boolean onQueryTextChange(String query) {
-        adapterSoko.setClickListenerSearch(this);
+        //adapterSoko.setClickListenerSearch(this);
 
        // final ArrayList<Soko> filteredModelList = adapterSoko.filter(listMovies, query);
        // adapterSoko.filter( query);

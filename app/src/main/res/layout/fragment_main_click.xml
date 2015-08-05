@@ -92,7 +92,7 @@ android:fitsSystemWindows="true">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_margin"
+            android:layout_marginBottom="@dimen/card_margin_detail"
             android:layout_marginLeft="@dimen/card_margin"
             android:layout_marginRight="@dimen/card_margin">
 
@@ -108,7 +108,7 @@ android:fitsSystemWindows="true">
                     android:id="@+id/sokoUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
+                    android:textSize="17dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -117,7 +117,7 @@ android:fitsSystemWindows="true">
                     android:layout_height="0.3dp"
                     android:background="@android:color/darker_gray"
                     android:layout_marginTop="7dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginRight="4dp"
 
                     />
@@ -132,7 +132,7 @@ android:fitsSystemWindows="true">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/sokoContact"
-                        android:textSize="14dp"
+                        android:textSize="17dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/card_margin"
@@ -151,7 +151,7 @@ android:fitsSystemWindows="true">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_margin"
+            android:layout_marginBottom="@dimen/card_margin_detail"
             android:layout_marginLeft="@dimen/card_margin"
             android:layout_marginRight="@dimen/card_margin"
             >
@@ -168,8 +168,8 @@ android:fitsSystemWindows="true">
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:paddingBottom="16dp"
+                    android:textSize="17dp"
+                    android:paddingBottom="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:id="@+id/sokoLocation"></TextView>
 
@@ -183,7 +183,7 @@ android:fitsSystemWindows="true">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/sokoPrice"
-                        android:textSize="15dp"
+                        android:textSize="17dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_weight="1"
                         />
@@ -192,7 +192,7 @@ android:fitsSystemWindows="true">
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tsh"
-                        android:textSize="15dp"
+                        android:textSize="18dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         />
 
@@ -207,7 +207,7 @@ android:fitsSystemWindows="true">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_margin"
+            android:layout_marginBottom="@dimen/card_margin_detail"
             android:layout_marginLeft="@dimen/card_margin"
             android:layout_marginRight="@dimen/card_margin">
 
@@ -221,7 +221,7 @@ android:fitsSystemWindows="true">
                     android:layout_height="wrap_content"
                     android:text="Imetangazwa"
                     android:textColor="@color/primary"
-                    android:textSize="15dp"
+                    android:textSize="18dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -237,7 +237,8 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sokoCreated"/>
+                    android:id="@+id/sokoCreated"
+                    android:textSize="17dp"/>
 
             </LinearLayout>
 
@@ -246,7 +247,7 @@ android:fitsSystemWindows="true">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_margin"
+            android:layout_marginBottom="@dimen/card_margin_detail"
             android:layout_marginLeft="@dimen/card_margin"
             android:layout_marginRight="@dimen/card_margin">
 
@@ -260,7 +261,7 @@ android:fitsSystemWindows="true">
                     android:layout_height="wrap_content"
                     android:text="Maelezo"
                     android:textColor="@color/primary"
-                    android:textSize="15dp"
+                    android:textSize="17dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -276,7 +277,7 @@ android:fitsSystemWindows="true">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="13dp"
+                    android:textSize="15dp"
                     android:id="@+id/sokoDesc"/>
 
             </LinearLayout>

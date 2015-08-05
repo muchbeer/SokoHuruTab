@@ -21,5 +21,7 @@
     <color name="primary">#009688</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
+    <color name="money">#FF1744</color>
+    <color name="title">#0091EA</color>
 
 </resources>
