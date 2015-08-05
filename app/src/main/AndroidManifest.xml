@@ -47,10 +47,6 @@
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
-        <activity
-            android:name=".itemclick.MainActivityClick"
-            android:label="@string/title_activity_main_activity_click" >
-        </activity>
 
         <!-- Google Analytics Version v4 needs this value for easy tracking -->
         <meta-data
@@ -93,7 +89,7 @@
 
         <activity
             android:name=".search.MainActivity"
-            android:label="Tafuta"
+            android:label="Tangaza"
             android:parentActivityName=".MainActivity" >
 
             <!-- To support below API Level 14 -->

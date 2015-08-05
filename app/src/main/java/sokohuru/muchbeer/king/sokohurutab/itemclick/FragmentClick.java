@@ -91,7 +91,7 @@ public class FragmentClick  extends Fragment {
     private NetworkImageView loadImageView;
     private CollapsingToolbarLayout collapsingToolbar;
     private TextView txtPrice;
-    private TextView txtContact, txtLocation, txtDesc,txtUsername, txtCreated;
+    private TextView txtContact, txtLocation, txtDesc, txtCreated;
     private String NULLIMAGE = "sokouhuru.com/image/sokohuru.png";
     //  private char[] title;
 
@@ -241,7 +241,7 @@ public class FragmentClick  extends Fragment {
                 txtContact.setText(contact);
                 txtDesc.setText(description);
                 txtCreated.setText(Created);
-                txtUsername.setText(username);
+              //  txtUsername.setText(username);
                 txtLocation.setText(location);
 
                 collapsingToolbar.setTitle(name);
@@ -286,7 +286,7 @@ public class FragmentClick  extends Fragment {
         txtLocation = (TextView) rootView.findViewById(R.id.sokoLocation);
         txtCreated = (TextView) rootView.findViewById(R.id.sokoCreated);
         txtDesc = (TextView) rootView.findViewById(R.id.sokoDesc);
-        txtUsername = (TextView) rootView.findViewById(R.id.sokoUser);
+      //  txtUsername = (TextView) rootView.findViewById(R.id.sokoUser);
 
 
 

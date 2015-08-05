@@ -58,6 +58,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import sokohuru.muchbeer.king.sokohurutab.Sokoni.MyApplication;
 import sokohuru.muchbeer.king.sokohurutab.Sokoni.Soko;
 import sokohuru.muchbeer.king.sokohurutab.adapters.AdapterSoko;
 import sokohuru.muchbeer.king.sokohurutab.detail.MainActivityDetail;
@@ -313,7 +314,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
             }
 
         }
-
+     //   MyApplication.getWritableDatabase().insertSokoOffice(listMovies, true);
         return listMovies;
     }
     @Override
@@ -327,7 +328,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
         Bundle bundle = getArguments();
         if(bundle !=null) {
-            Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
+           // Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
         }
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
@@ -369,6 +370,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         }
         else {
             sendJsonRequest();
+          //  MyApplication.getWritableDatabase().getAllItemFromMarket();
        //     adapterSoko.notifyDataSetChanged();
         }
 
@@ -425,9 +427,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
 
-                if(keyEvent.getAction()==KeyEvent.ACTION_DOWN) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
-                        case  KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
                             return true;
                         case KeyEvent.KEYCODE_DEL:
@@ -484,7 +486,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     @Override
     public boolean onQueryTextChange(String query) {
         //adapterSoko.setClickListenerSearch(this);
-
+        enterSearchZone = 1;
        // final ArrayList<Soko> filteredModelList = adapterSoko.filter(listMovies, query);
        // adapterSoko.filter( query);
 
@@ -515,7 +517,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     private ArrayList<Soko> filterBestSearch(ArrayList<Soko> models, String query) {
         query = query.toLowerCase();
-        enterSearchZone = 1;
+
 
         ArrayList<Soko> filteredModelList = new ArrayList<>();
         if (query.length() == 0) {

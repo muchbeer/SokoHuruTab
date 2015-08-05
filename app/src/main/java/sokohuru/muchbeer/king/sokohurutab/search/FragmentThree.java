@@ -112,18 +112,6 @@ public class FragmentThree extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
 
-        // Session manager
-       // session = new SessionManager(getActivity());
-
-        // Check if user is already logged in or not
-
-      //  preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-       // username = preferences.getString(SHARED_KEY, "");
-      //  if(!username.equalsIgnoreCase(""))
-     //   {
-      //      username = "Welcome: " + username;  /* Edit the value here*/
-     //   }
-
 
         Button btnSubmit = (Button) view.findViewById(R.id.sendInformation);
 
@@ -150,8 +138,8 @@ public class FragmentThree extends Fragment {
                 if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
                         && image.length()>0 && !location.isEmpty() && !description.isEmpty()) {
                     registerUser();
-                    editor.clear();
-                    editor.commit();
+                   // editor.clear();
+                  //  editor.commit();
                     txtName.setText("");
 
                 } else {

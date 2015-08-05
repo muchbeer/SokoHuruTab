@@ -10,7 +10,7 @@ import android.widget.Toast;
 public class L {
 
     public static void m(String message) {
-        Log.d("SOKONI", "" + message);
+        Log.d("SOKO HURU DATABASE", "" + message);
     }
 
     public static void t(Context context, String message) {

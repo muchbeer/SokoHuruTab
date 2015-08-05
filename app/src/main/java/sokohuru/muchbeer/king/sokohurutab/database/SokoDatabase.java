@@ -35,7 +35,7 @@ public class SokoDatabase {
 
         //create a sql prepared statement
         String sql = "INSERT INTO " + SokoHelper2.tableSokoni +
-                " VALUES (?,?,?,?,?):";
+                " VALUES (?,?,?,?,?,?,?,?,?)";
 
         //compile the statement and start a transaction
         SQLiteStatement statement = mDatabase.compileStatement(sql);
@@ -46,12 +46,19 @@ public class SokoDatabase {
             statement.clearBindings();
 
             //for a given column index, simply bind the data to be put inside that index
-            statement.bindString(2, currentSoko.getTitle());
-            statement.bindString(3, currentSoko.getImage());
-            statement.bindString(4, currentSoko.getRating());
-         //   statement.bindString(5, currentSoko.getGenre());
+            statement.bindString(2, currentSoko.getName());
+            statement.bindString(3, currentSoko.getPrice());
+       //     statement.bindString(5, currentSoko.getDesc());
+            statement.bindString(6, currentSoko.getLocation());
+            statement.bindString(7, currentSoko.getContact());
+          //  statement.bindString(8, currentSoko.getCreated());
+            statement.bindString(9, currentSoko.getUsername());
+            statement.bindString(10, currentSoko.getImage());
+
+            //   statement.bindString(5, currentSoko.getGenre());
 
             L.m("inserting entry " + i);
+            statement.execute();
         }
 
         //set the transaction as successful and end the transaction
@@ -64,11 +71,15 @@ public class SokoDatabase {
 
         //get a list of columns to be retrieved, we need all of them
         String[] columns = {
-                SokoHelper2.columnUID,
-                SokoHelper2.columnTITLE,
-                SokoHelper2.columnIMAGE,
-              //  SokoHelper2.columnGENRE,
-                SokoHelper2.columnRATING
+                SokoHelper2.columnID,
+                SokoHelper2.columnNAME,
+                SokoHelper2.columnPRICE,
+                SokoHelper2.columnDESC,
+                SokoHelper2.columnLOC,
+                SokoHelper2.columnCONTACT,
+                SokoHelper2.columnCREATED,
+                SokoHelper2.columnUSER,
+                SokoHelper2.getColumnIMAGE
 
         };
         Cursor cursor =mDatabase.query(SokoHelper2.tableSokoni,
@@ -85,10 +96,14 @@ public class SokoDatabase {
                 //column first
                 //find the data of the column using that inded and finally set our blank movie object to contain our data
 
-                sokoni.setTitle(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnTITLE)));
-                sokoni.setImage(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnIMAGE)));
-              //  sokoni.setGenre(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnGENRE)));
-                sokoni.setRating(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnRATING)));
+                sokoni.setName(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnNAME)));
+                sokoni.setPrice(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnPRICE)));
+                sokoni.setDesc(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnDESC)));
+                sokoni.setLocation(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnLOC)));
+                sokoni.setContact(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnCONTACT)));
+                sokoni.setCreated(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnCREATED)));
+                sokoni.setUsername(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnUSER)));
+                sokoni.setImage(cursor.getString(cursor.getColumnIndex(SokoHelper2.getColumnIMAGE)));
 
                 L.m("getting movie object " + sokoni);
                 listSokoni.add(sokoni);
@@ -102,20 +117,23 @@ public class SokoDatabase {
         mDatabase.delete(SokoHelper2.tableSokoni, null, null);
     }
 
-    private class SokoHelper2 extends SQLiteOpenHelper {
+    public class SokoHelper2 extends SQLiteOpenHelper {
 
-
+public final String TAG = SokoHelper2.class.getSimpleName();
 
         private Context mContext;
         private static final String dbName = "sokoni";
         private static final int dbVersion = 1;
         public static final String tableSokoni = "sokoniTable";
-        public static final String columnUID = "id";
-        public static final String columnTITLE = "title";
-        public static final String columnIMAGE = "image";
-        public static final String columnGENRE = "genre";
-        public static final String columnRATING = "rating";
-        public static final String columnYEAR = "releasingYear";
+        public static final String columnID = "pid";
+        public static final String columnNAME = "name";
+        public static final String columnPRICE = "price";
+        public static final String columnDESC = "description";
+        public static final String columnLOC = "location";
+        public static final String columnCONTACT = "contact";
+        public static final String columnCREATED = "created_at";
+        public static final String columnUSER = "login_user";
+        public static final String getColumnIMAGE="image";
 
 
 
@@ -130,12 +148,16 @@ public class SokoDatabase {
             try {
                 String CREATE_TABLE_SOKONI =
                         "CREATE TABLE " + tableSokoni + "(" +
-                                columnUID + " TEXT NULL, " +
-                                columnTITLE + " TEXT NULL, " +
-                                columnIMAGE + " TEXT NULL, " +
-                                columnRATING + " TEXT NULL " +
+                                columnID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                columnNAME + " TEXT NULL," +
+                                columnPRICE + " TEXT NULL," +
+                                columnDESC + " TEXT NULL," +
+                                columnLOC + " TEXT NULL," +
+                                columnCONTACT + " TEXT NULL," +
+                                columnCREATED + " TEXT NULL," +
+                                columnUSER + " TEXT NULL," +
+                                getColumnIMAGE + " TEXT NULL" + ")";
 
-                                "):";
                 db.execSQL(CREATE_TABLE_SOKONI);
 
                 L.m("create table sokoni executed");
