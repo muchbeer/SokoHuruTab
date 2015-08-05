@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sokohuru.muchbeer.king.sokohurutab" >
+    package="king.muchbeer.sokohuru">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,22 +14,22 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <permission
-        android:name="sokohuru.muchbeer.king.sokohurutab.permission.C2D_MESSAGE"
+        android:name="king.muchbeer.sokohuru.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="sokohuru.muchbeer.king.sokohurutab.permission.C2D_MESSAGE" />
+    <uses-permission android:name="king.muchbeer.sokohuru.permission.C2D_MESSAGE" />
     <!-- This app has permission to register and receive dataf message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
-        android:name=".Sokoni.MyApplication"
+        android:name="king.muchbeer.sokohuru.Sokoni.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".MainActivity"
+            android:name="king.muchbeer.sokohuru.MainActivity"
             android:label="@string/app_name"
             >
             <intent-filter>
@@ -39,8 +39,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".detail.MainActivityDetail"
-            android:parentActivityName=".MainActivity" >
+            android:name="king.muchbeer.sokohuru.detail.MainActivityDetail"
+            android:parentActivityName="king.muchbeer.sokohuru.MainActivity" >
 
             <!-- To support below API Level 14 -->
             <meta-data
@@ -63,7 +63,7 @@
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="sokohuru.muchbeer.king.sokohurutab" />
+                <category android:name="king.muchbeer.sokohuru" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.pushbots.push.DefaultPushHandler" />
@@ -88,9 +88,9 @@
             android:exported="false" />
 
         <activity
-            android:name=".search.MainActivity"
-            android:label="Tangaza"
-            android:parentActivityName=".MainActivity" >
+            android:name="king.muchbeer.sokohuru.search.MainActivity"
+            android:label="Tangaza Bidhaa"
+            android:parentActivityName="king.muchbeer.sokohuru.MainActivity" >
 
             <!-- To support below API Level 14 -->
             <meta-data

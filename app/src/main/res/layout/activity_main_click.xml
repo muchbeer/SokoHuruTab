@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/container2"
 
-    tools:context="sokohuru.muchbeer.king.sokohurutab.itemclick.MainActivityClick">
+    tools:context="king.muchbeer.sokohuru.itemclick.MainActivityClick">
 
 
 

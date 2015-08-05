@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/fragment_container"
-        tools:context="muchbeer.king.sokohuruswipe.FragmentOne">
+        tools:context=" king.muchbeer.sokohuru.FragmentOne">
 
         <LinearLayout
 

@@ -6,7 +6,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "sokohuru.muchbeer.king.sokohurutab"
+        applicationId "king.muchbeer.sokohuru"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 5
