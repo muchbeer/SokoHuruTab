@@ -29,6 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 
 public class LoginFragment extends Fragment implements
@@ -55,8 +56,8 @@ public class LoginFragment extends Fragment implements
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-      private String SHARED_KEY = "Name";
-
+      private String SHARED_KEY = "UserEmail";
+    private String SHARED_NAME_KEY ="UserName";
 
     @Nullable
     @Override
@@ -76,6 +77,7 @@ public class LoginFragment extends Fragment implements
 
         // Build a GoogleApiClient
         mGoogleApiClient = buildGoogleApiClient();
+       // mGoogleApiClient.connect();
 
         //Save value
         return view;
@@ -96,7 +98,6 @@ public class LoginFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-       // mGoogleApiClient.connect();
 
     }
 
@@ -110,21 +111,30 @@ public class LoginFragment extends Fragment implements
     @Override
     public void onConnected(Bundle bundle) {
 
-        mSignInButton.setEnabled(true);
-        mSignOutButton.setEnabled(true);
-        mRevokeButton.setEnabled(true);
 
+
+        // Update the UI after signin
+        updateUI(true);
 
         //set the shared preferences
         // Indicate that the sign in process is complete.
         mSignInProgress = SIGNED_IN;
 
         try {
-            String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String personGooglePlusProfile = currentPerson.getUrl();
+
+                String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
 
           preferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
             editor = preferences.edit();
            editor.putString(SHARED_KEY, emailAddress);
+            editor.putString(SHARED_NAME_KEY, personName);
 
             // Save the changes in SharedPreferences
             editor.commit(); // commit changes
@@ -146,6 +156,23 @@ public class LoginFragment extends Fragment implements
     public void onConnectionSuspended(int i) {
 
         mGoogleApiClient.connect();
+        updateUI(false);
+    }
+
+    /**
+     * Updating the UI, showing/hiding buttons and profile layout
+     * */
+    private void updateUI(boolean isSignedIn) {
+        if (isSignedIn) {
+            mSignInButton.setEnabled(false);
+            mSignOutButton.setEnabled(true);
+            mRevokeButton.setEnabled(true);
+        } else {
+                   mSignInButton.setEnabled(true);
+            mSignOutButton.setEnabled(false);
+            mRevokeButton.setEnabled(false);
+
+        }
     }
 
     @Override
@@ -167,7 +194,7 @@ public class LoginFragment extends Fragment implements
                     mGoogleApiClient.connect();
                     break;
                 case R.id.revoke_access_button:
-                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                   Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                     Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
                     mGoogleApiClient = buildGoogleApiClient();
                     mGoogleApiClient.connect();

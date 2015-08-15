@@ -76,7 +76,7 @@ public class FragmentThree extends Fragment {
     private String putName;
      String getName, getPrice, getContact;
     String naming = "jo";
-    private String itemName;
+    private String itemName, name_seller;
 
     public FragmentThree() {
         // Required empty public constructor
@@ -85,7 +85,9 @@ public class FragmentThree extends Fragment {
 
 
     //Getting username from Google
-    private String SHARED_KEY = "Name";
+    private String SHARED_KEY = "UserEmail";
+    private String SHARED_NAME_KEY ="UserName";
+
     String login_username;
 
 
@@ -130,7 +132,8 @@ public class FragmentThree extends Fragment {
                 contact =edtContact.getText().toString();
 
                   image =    sharedpreferences.getString(KEY_LINK, "");
-                login_username = sharedpreferences.getString(SHARED_KEY, "");// getting Long
+                login_username = sharedpreferences.getString(SHARED_KEY, "");// getting username email
+                name_seller = sharedpreferences.getString(SHARED_NAME_KEY, ""); //getting name of the
                // Toast.makeText(getActivity(), "Email yako ni: " + username , Toast.LENGTH_LONG).show();
 
 
@@ -229,7 +232,7 @@ public class FragmentThree extends Fragment {
                 params.put("location", location);
                 params.put("description", description);
                 params.put("login_username", login_username);
-
+                params.put("name_seller", name_seller);
                 return params;
             }
 

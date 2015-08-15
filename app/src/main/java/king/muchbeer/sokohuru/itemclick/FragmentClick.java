@@ -1,6 +1,7 @@
 package king.muchbeer.sokohuru.itemclick;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.app.Fragment;
@@ -8,10 +9,13 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -82,6 +86,7 @@ public class FragmentClick  extends Fragment {
     private TextView txtPrice;
     private TextView txtContact, txtLocation, txtDesc, txtCreated;
     private String NULLIMAGE = "sokouhuru.com/image/sokohuru.png";
+    private ImageView imgCall;
     //  private char[] title;
 
 
@@ -225,6 +230,31 @@ public class FragmentClick  extends Fragment {
                 sokoni.setImage(imaging);
              //   txtName.setText(title);
 
+                final String finalContact = contact;
+                imgCall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+
+                            if (finalContact != null && (finalContact.length() == 10
+                                    || finalContact.length() == 13)) {
+                                startActivity(new Intent(Intent.ACTION_CALL,
+                                        Uri.parse("tel:" + finalContact)));
+                            } else if (finalContact != null &&
+                                    finalContact.length() < 10 || finalContact.length() > 13) {
+                                Toast.makeText(getActivity(),
+                                        "muuzaji hajaweka namba sahihi!", Toast.LENGTH_SHORT).show();
+                            } else if(finalContact.length() ==0) {
+                                Toast.makeText(getActivity(),
+                                        "Tafadhari jaribu tena utapoona namba imetokea!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }catch (Exception e) {
+                            Log.e("Soko Huru Dialer", "error: " +
+                                    e.getMessage(), e);
+                        }
+                    }
+                });
 
                 txtPrice.setText(price);
                 txtContact.setText(contact);
@@ -275,6 +305,7 @@ public class FragmentClick  extends Fragment {
         txtLocation = (TextView) rootView.findViewById(R.id.sokoLocation);
         txtCreated = (TextView) rootView.findViewById(R.id.sokoCreated);
         txtDesc = (TextView) rootView.findViewById(R.id.sokoDesc);
+        imgCall = (ImageView) rootView.findViewById(R.id.image_call);
       //  txtUsername = (TextView) rootView.findViewById(R.id.sokoUser);
 
 
@@ -286,7 +317,15 @@ public class FragmentClick  extends Fragment {
              Intent collectDataIntent = getActivity().getIntent();
         position = collectDataIntent.getIntExtra(TAG_POSITION, -1);
 
-          sendJsonRequest(position);
+        if(savedInstanceState !=null) {
+           sendJsonRequest(position);
+        }
+        else {
+            sendJsonRequest(position);
+            //  MyApplication.getWritableDatabase().getAllItemFromMarket();
+            //     adapterSoko.notifyDataSetChanged();
+        }
+
        return rootView;
     }
 

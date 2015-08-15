@@ -141,6 +141,7 @@ android:fitsSystemWindows="true">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/image_call"
                         android:src="@drawable/ic_phone"
                         android:layout_marginRight="@dimen/card_margin"/>
                 </LinearLayout>

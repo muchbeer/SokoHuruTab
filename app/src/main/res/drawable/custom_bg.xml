@@ -4,7 +4,7 @@
     <item android:state_pressed="true">
 
         <shape>
-            <solid android:color="@color/cardLine"></solid>
+            <solid android:color="@color/background"></solid>
         </shape>
 
     </item>
