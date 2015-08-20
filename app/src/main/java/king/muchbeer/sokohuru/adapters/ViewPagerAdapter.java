@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
            // sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment tab1 = new sokohuru.muchbeer.king.sokohurutab.syncItem.SokoHuruFragment();
 
 
-            SokoHuruFragment tab1 = new SokoHuruFragment();
+            king.muchbeer.sokohuru.SokoHuruFragment tab1 = new king.muchbeer.sokohuru.SokoHuruFragment();
 
             return tab1;
                 }

@@ -1,23 +1,24 @@
-package king.muchbeer.sokohuru;
+package king.muchbeer.sokohuru.searchope;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,23 +42,21 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import king.muchbeer.sokohuru.Sokoni.MyApplication;
+import king.muchbeer.sokohuru.R;
 import king.muchbeer.sokohuru.Sokoni.Soko;
-import king.muchbeer.sokohuru.adapters.AdapterSoko;
 import king.muchbeer.sokohuru.detail.MainActivityDetail;
 import king.muchbeer.sokohuru.extras.Constants;
 import king.muchbeer.sokohuru.loggin.L;
 import king.muchbeer.sokohuru.network.VolleySingleton;
-import king.muchbeer.sokohuru.searchope.SearchHelperAdapter;
-import king.muchbeer.sokohuru.searchope.SokoHuruStorage;
 
 import static king.muchbeer.sokohuru.extras.Keys.EndpointBoxOffice.*;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListenerSearch, AdapterSoko.ClickListener {
+public class SokoHuruFragment extends Fragment implements ExampleAdapter.ClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,7 +74,8 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private static final String TAG_POSITION = "position";
     private static final String TAG_POSITION2 = "position2";
 
-
+//Database
+private SearchHelperAdapter mDbHelper;
     RecyclerView.LayoutManager mLayoutManager;
 
     // TODO: Rename and change types of parameters
@@ -84,19 +84,26 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private ImageLoader imageLoader;
     private RequestQueue requestQueue;
     public ArrayList<Soko> listMovies = new ArrayList<>();
+  //  private MyCustomAdapter defaultAdapter;
 
-    public ArrayList<Soko> listFilterBest = new ArrayList<>();
+    public ArrayList<Soko> filteredProductResults = new ArrayList<>();
+    //Based on the search string, only filtered products will be moved here from productResults
 
 
     public RecyclerView listSokoni;
     private RecyclerView.LayoutManager sLayoutManager;
 
-    private SearchHelperAdapter mDbHelper;
+    //Searchable
+
+    // private SearchView mSearchView;
+
+
 
     // private OnFragmentInteractionListener mListener;
     private VolleySingleton volleySingleton;
 
-    private AdapterSoko adapterSoko;
+    private ExampleAdapter adapterSoko;
+
     private TextView mTextError;
     private TextView txtPosition;
     private String result;
@@ -108,6 +115,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
     private TextView txtswipeRefresh;
     private int findPosition;
     private int enterSearchZone;
+    private ListView myList;
 
 
     // TODO: Rename and change types and number of parameters
@@ -149,7 +157,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
 
     public void sendJsonRequest() {
         // showing refresh animation before making http call
-       // swipeRefreshLayout.setRefreshing(true);
+        // swipeRefreshLayout.setRefreshing(true);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_SOKO,
                 null,
@@ -167,10 +175,10 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("Error: ", error.getMessage());
-                    //    L.t(getActivity(),error.toString());
+                        //    L.t(getActivity(),error.toString());
                         //if any error occurs in the network operations, show the TextView that contains the error message
                         mTextError.setVisibility(View.VISIBLE);
-                    //    btnRefresh.setVisibility(View.VISIBLE);
+                        //    btnRefresh.setVisibility(View.VISIBLE);
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             mTextError.setText(R.string.error_timeout);
 
@@ -254,30 +262,17 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     Soko sokoni = new Soko();
                     // sokoni.setId(id);
                     sokoni.setName(name);
-                    sokoni.setImage(imaging);
+                  //  sokoni.setImage(imaging);
                     //   sokoni.setRating(rating);
-                    sokoni.setPrice(price);
-                    sokoni.setContact(contact);
-                    sokoni.setLocation(location);
+                //    sokoni.setPrice(price);
+                //    sokoni.setContact(contact);
+                  //  sokoni.setLocation(location);
                     //  sokoni.setReleaseYear(releaseYear);
 
                   /*
                    Release year has someKind of problem try observe that has you move forward
                    sokoni.setReleaseYear(releaseYear);
                     */
-
-                    matchFound ="N";
-                    /*
-                    for (int j=0; j<listMovies.size(); j++) {
-                        if(listMovies.get(j).getTitle().equals(sokoni.getTitle())) {
-                            matchFound="Y";
-                        }
-                    }
-                    if(matchFound =="N") {
-                        listFilterBest.add(sokoni);
-                    }
-
-*/
 
                     matchFound ="N";
 
@@ -291,37 +286,46 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     }
 
 
+
+                 //   if(!name.equals(Constants.NA)) {
+                    //    listMovies.add(sokoni);
+                 //   }
+
                 }
 
 
                 // L.t(getActivity(), data.toString());
-            //    L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
+                  // L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
 
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
             }
 
         }
-     //   MyApplication.getWritableDatabase().insertSokoOffice(listMovies, true);
+        //   MyApplication.getWritableDatabase().insertSokoOffice(listMovies, true);
         return listMovies;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_soko_huru, container, false);
+        View view = inflater.inflate(R.layout.listview, container, false);
         // Inflate the layout for this fragment
 
+        //relate the listView from java to the one created in xml
+    //    myList = (ListView) view.findViewById(R.id.list);
+    //    adapterSoko = new ExampleAdapter(getActivity(), listMovies);
+    //    myList.setAdapter((ListAdapter) adapterSoko);
 
 
         Bundle bundle = getArguments();
         if(bundle !=null) {
-           // Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
+            // Toast.makeText(getActivity(),"The selected page is: " + bundle.getInt("position"), Toast.LENGTH_LONG).show();
         }
 
         mTextError = (TextView) view.findViewById(R.id.textVolleyError);
         txtPosition = (TextView) view.findViewById(R.id.position);
-     //   btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
+        //   btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         circularProgress = (ProgressBar) view.findViewById(R.id.progressBar);
         txtswipeRefresh = (TextView) view.findViewById(R.id.infoText);
@@ -331,35 +335,35 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                 Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
 
-        //Swipe refresh 
-  //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        //Swipe refresh
+        //      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
 
 
         listSokoni = (RecyclerView) view.findViewById(R.id.listSokoni);
         listSokoni.setHasFixedSize(true);
 
 
-     //   listSokoni.getAdapter().notifyDataSetChanged();
+        //   listSokoni.getAdapter().notifyDataSetChanged();
 
         // First param is number of columns and second param is orientation i.e Vertical or Horizontal
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 // Attach the layout manager to the recycler view
         listSokoni.setLayoutManager(gridLayoutManager);
- // listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapterSoko = new AdapterSoko(getActivity());
-        adapterSoko.setClickListener(this);
-        listSokoni.swapAdapter(adapterSoko, false);
-      // listSearch = adapterSoko.setSokoList();
+        adapterSoko = new ExampleAdapter(getActivity(), listMovies);
+       adapterSoko.setClickListener(this);
+        listSokoni.swapAdapter(adapterSoko, true);
+        // listSearch = adapterSoko.setSokoList();
         if(savedInstanceState !=null) {
             listMovies = savedInstanceState.getParcelableArrayList(STATE_SOKO);
             adapterSoko.setSokoList(listMovies);
         }
         else {
             sendJsonRequest();
-
-       //     adapterSoko.notifyDataSetChanged();
+            //  MyApplication.getWritableDatabase().getAllItemFromMarket();
+            //     adapterSoko.notifyDataSetChanged();
         }
 
         if    (adapterSoko.getItemCount() == 0) {
@@ -375,7 +379,7 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
                     circularProgress.setVisibility(View.GONE);
                 }
 
-            }, 8000);
+            }, 14000);
 
 
         } else {
@@ -384,38 +388,44 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         }
 
 
+
+
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 
         /**
-        // TextFilter
-   //     listSokoni.setTextFilterEnabled(true);
-      //  swipeRefreshLayout.setOnRefreshListener(this);
+         // TextFilter
+         //     listSokoni.setTextFilterEnabled(true);
+         //  swipeRefreshLayout.setOnRefreshListener(this);
 
-        /**
+         /**
          * Showing Swipe Refresh animation on activity create
          * As animation won't start on onCreate, post runnable is used
          */
 
+        mDbHelper = new SearchHelperAdapter(getActivity());
+        try {
+            mDbHelper.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        for (int i = 0; i<listMovies.size(); i++) {
-            final String text = listMovies.get(i).getName().toLowerCase();
+        //Clear all names
+        mDbHelper.deleteAllNames();
+        for (Soko model : listMovies) {
+            final String text = model.getTitle().toLowerCase();
 
-            long id = mDbHelper.insertProduct(text);
-            if (id<0) {
-                L.T(getActivity(), "Umefeli bana");
-            } else {
-                L.T(getActivity(), "Hongera umeweza");
+            //Getting the text to the database
+            mDbHelper.createList(text);
 
-            }
         }
 
 
-        setHasOptionsMenu(true);
 
         return view;
 
 
     }
+
 
     @Override
     public void onDestroyView() {
@@ -425,63 +435,53 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         }
     }
 
+    private void displayResults(String query) {
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-     //   super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main, menu);
+        Cursor cursor = null;
 
 
-        //return true;
+        if (cursor != null) {
 
-    }
+       //     String[] from = new String[]{SearchHelperAdapter.COLUMN_NAME};
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+            // Specify the view where we want the results to go
+          int[] to = new int[]{R.id.search_result_text_view};
 
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                // Do Activity menu item stuff here
-                MyApplication.getWritableDatabase().insertSokoOffice(listMovies, true);
-                Intent openOffline = new Intent(getActivity(), SokoHuruStorage.class);
-                startActivity(openOffline);
-                return true;
+            // Create a simple cursor adapter to keep the search data
+      //    SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.listviewresult, cursor, from, to);
+     //    listSokoni.setAdapter(cursorAdapter);
 
-            default:
-                break;
         }
 
-        return false;
     }
-
-    public void returnPosition( int position) {
-
-
-        findPosition = position;
-        //itemClicked2(view, position);
-    }
-
-    @Override
-    public void itemClicked2(View view, int positionSearch) {
-        //Toast.makeText(getActivity(),"Pata uondo kutoka Soko Huru:  ", Toast.LENGTH_LONG).show();
-
-    }
-
     @Override
     public void itemClicked(View view, int position) {
         // Toast.makeText(getActivity(), "Item Clicked at " + position, Toast.LENGTH_LONG).show();
         // result = String.valueOf(position);
-    //    if(enterSearchZone != 1) {
-            Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
-            // positionSearch = getActivity().position;
-            startIntent.putExtra(TAG_POSITION, position);
-            //    startIntent.putExtra(TAG_POSITION2, positionSearch);
-            startActivityForResult(startIntent, SHARING_CODE);
+        //    if(enterSearchZone != 1) {
+        Intent startIntent = new Intent(getActivity(), MainActivityDetail.class);
+        // positionSearch = getActivity().position;
+        startIntent.putExtra(TAG_POSITION, position);
+        //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+        startActivityForResult(startIntent, SHARING_CODE);
 
 
 
     }
 
+
+
+
+
+    //in this myAsyncTask, we are fetching data from server for the search string entered by user.
+    class myAsyncTask extends AsyncTask<String, Void, String>
+    {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+    }
 
     private ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
         query = query.toLowerCase();
@@ -489,6 +489,9 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         final ArrayList<Soko> filteredModelList = new ArrayList<>();
         for (Soko model : models) {
             final String text = model.getTitle().toLowerCase();
+
+            //Getting the text to the database
+            mDbHelper.createList(text);
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }
@@ -497,29 +500,21 @@ public class SokoHuruFragment extends Fragment implements AdapterSoko.ClickListe
         return filteredModelList;
     }
 
-    private ArrayList<Soko> filterBestSearch(ArrayList<Soko> models, String query) {
+    private List<Soko> filterBestSearch(ArrayList<Soko> models, String query) {
         query = query.toLowerCase();
 
-
-        ArrayList<Soko> filteredModelList = new ArrayList<>();
-        if (query.length() == 0) {
-            //  listSokoni.setAdapter(adapterSoko);
-            sendJsonRequest();
-            //   InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            //   imm.hideSoftInputFromWindow(View.getWindowToken(), 0);
-        } else {
-            for (int i = 0; i<listMovies.size(); i++) {
-                final String text = listMovies.get(i).getName().toLowerCase();
-                if (text.contains(query)) {
-                    filteredModelList.add(listMovies.get(i));
-                    positionSearch = i;
-                }
+        final ArrayList<Soko> filteredModelList = new ArrayList<>();
+        for (Soko model : models) {
+            final String text = model.getName().toLowerCase();
+            //Getting the text to the database
+            mDbHelper.createList(text);
+            if (text.contains(query)) {
+                filteredModelList.add(model);
             }
-
         }
-        adapterSoko.notifyDataSetChanged();
         return filteredModelList;
     }
+
     SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener(){
 
         @Override

@@ -49,7 +49,14 @@
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
+        <!-- Activities for search and offline -->
 
+        <activity
+            android:name="king.muchbeer.sokohuru.searchope.SokoHuruStorage"
+            android:label="Offline"
+           >
+
+        </activity>
         <!-- Google Analytics Version v4 needs this value for easy tracking -->
         <meta-data
             android:name="com.google.android.gms.version"

@@ -6,7 +6,6 @@
     <item
         android:id="@+id/menu_search"
 
-        android:title="@string/menuSearch"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always"/>
+        android:title="Offline"
+        app:showAsAction="never"/>
 </menu>

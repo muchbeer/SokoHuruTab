@@ -31,14 +31,14 @@ import  king.muchbeer.sokohuru.network.VolleySingleton;
 /**
  * Created by muchbeer on 6/19/2015.
  */
-public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSokoni> {
+public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolderSokoni> {
 
 
     private final LayoutInflater layoutInflater;
     private final VolleySingleton volleySingleTon;
     private final ImageLoader imageLoader;
     private int SHARE_CODE = 1;
-
+    int count;
     private Filter planetFilter;
 
     private ArrayList<Soko> planetList;
@@ -51,13 +51,15 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private CharSequence SOKOHURU = "sokouhuru";
 
 
-    public AdapterSoko(Context context) {
+    public AdapterSearch(Context context,  ArrayList<Soko> product_details) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         volleySingleTon = VolleySingleton.getsInstance();
         imageLoader = volleySingleTon.getImageLoader();
 
-       // L.t(context, "message");
+        this.slistSokoni=product_details;
+        this.count= product_details.size();
+        // L.t(context, "message");
     }
 
     public void setSokoList(ArrayList<Soko> listSokoni) {
@@ -70,7 +72,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
-      //  setClickListener.
+        //  setClickListener.
     }
 
     private void applyAndAnimateRemovals(List<Soko> newModels) {
@@ -143,7 +145,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     }
 
     @Override
-    public AdapterSoko.ViewHolderSokoni onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterSearch.ViewHolderSokoni onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view =  layoutInflater.inflate(R.layout.fragment_soko_lookfeel, parent, false);
         ViewHolderSokoni viewHolderSokoni = new ViewHolderSokoni(view);
@@ -182,8 +184,8 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
                 }
             });
         }
-else {
-           // img.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),R.drawable.chen_gong));
+        else {
+            // img.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),R.drawable.chen_gong));
 
             imageLoader.get(urlThumbnailReplacement, new ImageLoader.ImageListener() {
                 @Override
@@ -201,11 +203,11 @@ else {
         }
 
 
-  }
+    }
 
-public void setClickListener(ClickListener clickListener) {
-    this.clickListener = clickListener;
-}
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public void setClickListenerSearch( ClickListenerSearch clickListenerSearch) {
         this.clickListenerSearch = clickListenerSearch;
@@ -218,26 +220,30 @@ public void setClickListener(ClickListener clickListener) {
     }
 
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
 
-        public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolderSokoni extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-       private static final int SHARING_CODE = 1;
-       public ImageView sokoThumbnail;
+        private static final int SHARING_CODE = 1;
+        public ImageView sokoThumbnail;
         public TextView sokoTitle;
         public TextView sokoGenre;
-            public TextView  sokoLocation;
-            public TextView sokoContact;
-     //  private ClickListener clickListener;
+        public TextView  sokoLocation;
+        public TextView sokoContact;
+        //  private ClickListener clickListener;
 
 
-       public ViewHolderSokoni(View itemView) {
+        public ViewHolderSokoni(View itemView) {
             super(itemView);
-                
+
             sokoThumbnail = (ImageView) itemView.findViewById(R.id.sokoThumbnail);
             sokoTitle = (TextView) itemView.findViewById(R.id.sokoTitle);
             sokoGenre = (TextView) itemView.findViewById(R.id.sokoRating);
             sokoLocation = (TextView) itemView.findViewById(R.id.sokoLocation);
-           sokoContact = (TextView) itemView.findViewById(R.id.sokoContact);
+            sokoContact = (TextView) itemView.findViewById(R.id.sokoContact);
 
 
 
@@ -247,11 +253,11 @@ public void setClickListener(ClickListener clickListener) {
         }
 
 
-       @Override
-       public void onClick(View view) {
-         //  Intent startIntent = new Intent(context, MainActivityDetail.class);
+        @Override
+        public void onClick(View view) {
+            //  Intent startIntent = new Intent(context, MainActivityDetail.class);
 
-         //  ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
+            //  ((MainActivity)context).startActivityForResult(i, SHARING_CODE );
 
             if(clickListener!=null) {
                 clickListener.itemClicked(view, getPosition());
@@ -259,28 +265,28 @@ public void setClickListener(ClickListener clickListener) {
             } if(clickListenerSearch !=null) {
 
 
-               clickListenerSearch.itemClicked2(view,  getPosition());
-           }
-       }
+                clickListenerSearch.itemClicked2(view,  getPosition());
+            }
+        }
 
 
-   }
-public interface ClickListener{
+    }
+    public interface ClickListener{
 
-    public void itemClicked(View view, int position);
-}
+        public void itemClicked(View view, int position);
+    }
 
     public interface ClickListenerSearch {
         public void itemClicked2(View view, int positionSearch);
     }
 
     public ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
-       // query = query.toLowerCase();
+        // query = query.toLowerCase();
 
         query = query.toLowerCase(Locale.getDefault());
         slistSokoni.clear();
         ArrayList<Soko> filteredModelList = new ArrayList<>();
-     //    ArrayList<Soko> filteredModelList = new ArrayList<>();
+        //    ArrayList<Soko> filteredModelList = new ArrayList<>();
         if (query.length() == 0) {
             slistSokoni.addAll(models);
         } else {

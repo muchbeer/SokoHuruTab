@@ -190,11 +190,11 @@ public class Soko implements Parcelable{
     public String toString() {
         return
                 "ID: " +id+
-                "Title: "+title+
-                "Image: " + image+
-                "Release Year: "+ releaseYear+
-                "Rating: "+rating+
-                "Genre: " + genre;
+                        "Title: "+title+
+                        "Image: " + image+
+                        "Release Year: "+ releaseYear+
+                        "Rating: "+rating+
+                        "Genre: " + genre;
     }
 
     @Override

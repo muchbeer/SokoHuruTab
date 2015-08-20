@@ -35,10 +35,12 @@ public class SokoDatabase {
 
         //create a sql prepared statement
         String sql = "INSERT INTO " + SokoHelper2.tableSokoni +
-                " VALUES (?,?,?,?,?,?,?,?,?)";
+                " VALUES (?,?,?,?,?,?,?,?);";
 
+       // " VALUES (?,?,?);";
         //compile the statement and start a transaction
         SQLiteStatement statement = mDatabase.compileStatement(sql);
+
         mDatabase.beginTransaction();
 
         for (int i = 0; i < listSoko.size(); i++ ) {
@@ -48,16 +50,18 @@ public class SokoDatabase {
             //for a given column index, simply bind the data to be put inside that index
             statement.bindString(2, currentSoko.getName());
             statement.bindString(3, currentSoko.getPrice());
-       //     statement.bindString(5, currentSoko.getDesc());
-            statement.bindString(6, currentSoko.getLocation());
-            statement.bindString(7, currentSoko.getContact());
-          //  statement.bindString(8, currentSoko.getCreated());
-            statement.bindString(9, currentSoko.getUsername());
-            statement.bindString(10, currentSoko.getImage());
+
+           statement.bindString(4, currentSoko.getDesc());
+            statement.bindString(5, currentSoko.getLocation());
+            statement.bindString(6, currentSoko.getContact());
+            statement.bindString(7, currentSoko.getCreated());
+            statement.bindString(8, currentSoko.getUsername());
+            statement.bindString(9, currentSoko.getImage());
 
             //   statement.bindString(5, currentSoko.getGenre());
 
-            L.m("inserting entry " + i);
+            L.m("SOKO HURU INSERTING " + i);
+
             statement.execute();
         }
 
@@ -66,12 +70,47 @@ public class SokoDatabase {
         mDatabase.endTransaction();
     }
 
+    public String getAllData() {
+        ArrayList<Soko> listSokoni = new ArrayList<>();
+
+        StringBuffer buffer = new StringBuffer();
+        String nameItem;
+
+        //get a list of columns to be retrieved, we need all of them
+        String[] columns = {
+
+                SokoHelper2.columnNAME,
+
+
+        };
+        Cursor cursor =mDatabase.query(SokoHelper2.tableSokoni,
+                columns, null,null,null,null,null);
+
+        if(cursor !=null && cursor.moveToFirst()) {
+            do {
+                //create a new item object and retrieve the data
+                //the cursor to be store in the item object
+
+               // Soko sokoni = new Soko();
+
+               //  sokoni.setName(cursor.getString(cursor.getColumnIndex(SokoHelper2.columnNAME)));
+               nameItem = cursor.getString(cursor.getColumnIndex(SokoHelper2.columnNAME));
+                buffer.append(nameItem + "\n");
+                L.m("SOKO HURU STORAGE " + buffer.toString());
+           //     listSokoni.add(sokoni);
+            } while (cursor.moveToNext());
+        }
+
+
+        return buffer.toString();
+    }
+
     public ArrayList<Soko> getAllItemFromMarket() {
         ArrayList<Soko> listSokoni = new ArrayList<>();
 
         //get a list of columns to be retrieved, we need all of them
         String[] columns = {
-                SokoHelper2.columnID,
+
                 SokoHelper2.columnNAME,
                 SokoHelper2.columnPRICE,
                 SokoHelper2.columnDESC,

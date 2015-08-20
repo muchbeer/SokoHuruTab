@@ -109,7 +109,8 @@ android:fitsSystemWindows="true">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17dp"
-                    android:text="Namba"
+                    android:text="Namba ya simu"
+                    android:textColor="@color/primary_dark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <View
@@ -130,6 +131,7 @@ android:fitsSystemWindows="true">
                     >
 
                     <TextView
+                        android:paddingTop="@dimen/card_margin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/sokoContact"
@@ -172,6 +174,7 @@ android:fitsSystemWindows="true">
                     android:layout_height="wrap_content"
                     android:textSize="17dp"
                     android:paddingBottom="8dp"
+                    android:textColor="@color/primary_dark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:id="@+id/sokoLocation"></TextView>
 
